@@ -3,6 +3,7 @@ A minimalistic dashboard implementation.
 
 It consists of a REST API endpoint and from a web interface to view the data.
 
+
 ## Basic concept
 
 Every entry is assigned to domains and categories. Every entry is unique and is updated
@@ -38,3 +39,17 @@ HTTP GET:
 
 ### Delete the data
 HTTP DELETE: `/api/data/[domain]/[category]/[entry]`
+
+
+## Container
+
+1. Build the application.
+2. Build the image via the `docker build -t minidashboard .` command.
+3. Run the built image via the `docker run --rm -p 8080:8080 minidashboard` command.
+
+The container is creating a database file in the `/data` folder. So you can mount a volume to externalize
+it and to prevent data loss upon shutting down the container.
+
+`docker run --rm -p 8080:8080 -v $(pwd):/data minidashboard`
+
+The maximum heap size is in the Dockerfile limited to 64MB.

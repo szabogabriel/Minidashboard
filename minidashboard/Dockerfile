@@ -3,10 +3,10 @@ FROM openjdk:17-jdk-alpine
 
 WORKDIR /app
 
+ENV DATA_DIR=/data
+
+RUN mkdir /data
+
 COPY target/minidashboard-0.0.1-SNAPSHOT.jar /app/minidashboard.jar
 
-# Expose port 8080 for the Spring Boot app
-EXPOSE 8080
-
-# Run the Spring Boot application when the container starts
-CMD ["java", "-jar", "minidashboard.jar"]
+CMD ["java", "-Xmx64M", "-jar", "minidashboard.jar"]
