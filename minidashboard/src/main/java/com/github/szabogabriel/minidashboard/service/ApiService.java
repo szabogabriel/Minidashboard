@@ -23,6 +23,14 @@ public class ApiService {
 	@Autowired
 	private DomainService domainService;
 
+	public void deleteEntry(String domainName, String category, String entry) {
+		Optional<DomainEntity> optionalDomainEntity = domainService.getDomain(domainName);
+		
+		if (optionalDomainEntity.isPresent()) {
+			dataEntryService.deleteEntry(optionalDomainEntity.get(), category, entry);
+		}
+	}
+	
 	public void createEntry(String domainName, String category, String entry, DataRequest attributes) {
 		DataEntryEntity dee = new DataEntryEntity();
 
