@@ -1,0 +1,37 @@
+{{#data.entries}}
+<h1>{{category}}</h1>
+<table class="table table-hover">
+  <tbody>
+  {{#dataRows}}
+    <tr>
+    <td>{{lastChanged}}</td>
+    <td>{{entry}}</td>
+    {{#isLevel0}}
+      <td>{{#level0}}{{level0}}{{/level0}}</td>
+    {{/isLevel0}}
+    {{#isLevel1}}
+      <td>{{#level1}}{{level1}}{{/level1}}</td>
+    {{/isLevel1}}
+    {{#isLevel2}}
+      <td>{{#level2}}{{level2}}{{/level2}}</td>
+    {{/isLevel2}}
+    {{#isLevel3}}
+      <td>{{#level3}}{{level3}}{{/level3}}</td>
+    {{/isLevel3}}
+    {{#isLevel4}}
+      <td>{{#level4}}{{level4}}{{/level4}}</td>
+    {{/isLevel4}}
+    {{#isLevel5}}
+      <td>{{#level5}}{{level5}}{{/level5}}</td>
+    {{/isLevel5}}
+    {{#isLevel6}}
+      <td>{{#level6}}{{level6}}{{/level6}}</td>
+    {{/isLevel6}}
+    {{#isLevel7}}
+      <td>{{#level7}}{{level7}}{{/level7}}</td>
+    {{/isLevel7}}
+    </tr>
+  {{/dataRows}}
+  </tbody>
+</table>
+{{/data.entries}}
