@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
+import com.github.szabogabriel.minidashboard.data.gui.DataCategoryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataEntryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataRowGui;
 import com.github.szabogabriel.minidashboard.data.gui.IndexDomainEntry;
@@ -38,8 +39,8 @@ public class GuiService {
 		return domainService.getDomainNames().stream().map(e -> map(e, selectedDomain)).collect(Collectors.toList());
 	}
 
-	public List<DataEntryGui> getDomainData(String domain) {
-		List<DataEntryGui> ret = new ArrayList<>();
+	public List<DataCategoryGui> getDomainData(String domain) {
+		List<DataCategoryGui> ret = new ArrayList<>();
 
 		Optional<DomainEntity> dom = domainService.getDomain(domain);
 
@@ -59,26 +60,36 @@ public class GuiService {
 		return ret;
 	}
 
-	private List<DataEntryGui> map(List<DataEntryEntity> entities) {
-		Map<String, DataEntryGui> tmp = new HashMap<>();
+	private List<DataCategoryGui> map(List<DataEntryEntity> entities) {
+		Map<String, DataCategoryGui> tmp = new HashMap<>();
 
 		for (DataEntryEntity it : entities) {
-			DataEntryGui deg;
+			DataCategoryGui dcg;
 			if (!tmp.containsKey(it.getCategory())) {
-				deg = new DataEntryGui();
-				deg.setCategory(it.getCategory());
-				deg.setEntry(it.getEntry());
-				deg.setLastChanged(format(DateUtils.fromMillies(it.getLastModified())));
+				dcg = new DataCategoryGui();
+				dcg.setCategory(it.getCategory());
 			} else {
-				deg = tmp.get(it.getCategory());
+				dcg = tmp.get(it.getCategory());
 			}
-			DataRowGui drg = map(it);
-			deg.addDataRow(drg);
-			tmp.put(it.getCategory(), deg);
+			
+			dcg.addDataEntry(mapToEntryGui(it));
+			tmp.put(it.getCategory(), dcg);
 		}
 
-		List<DataEntryGui> ret = tmp.values().stream().toList();
+		List<DataCategoryGui> ret = tmp.values().stream().toList();
 
+		return ret;
+	}
+	
+	private DataEntryGui mapToEntryGui(DataEntryEntity dataEntryEntity) {
+		DataEntryGui ret = new DataEntryGui();
+
+		ret.setEntry(dataEntryEntity.getEntry());
+		ret.setLastChanged(format(DateUtils.fromMillies(dataEntryEntity.getLastModified())));
+		
+		DataRowGui drg = mapToRowGui(dataEntryEntity);
+		ret.addDataRow(drg);
+		
 		return ret;
 	}
 	
@@ -89,7 +100,7 @@ public class GuiService {
 		return date.format(dtf);
 	}
 
-	private DataRowGui map(DataEntryEntity entity) {
+	private DataRowGui mapToRowGui(DataEntryEntity entity) {
 		DataRowGui ret = new DataRowGui();
 
 		ret.setLevel0(entity.getLevel0());

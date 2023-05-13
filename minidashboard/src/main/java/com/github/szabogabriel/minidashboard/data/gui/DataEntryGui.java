@@ -1,6 +1,5 @@
 package com.github.szabogabriel.minidashboard.data.gui;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import lombok.Data;
 @Data
 public class DataEntryGui {
 	
-	private String category;
 	private String entry;
 	
 	private String lastChanged;

@@ -33,4 +33,4 @@ curl -X POST \
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"level0": "Donald Knuth", "level1": "10/10"}' \
-  http://localhost:8080/api/data/Books/Technical/The%20Art%20of%Computer%20Programming
+  http://localhost:8080/api/data/Books/Technical/The%20Art%20of%20Computer%20Programming

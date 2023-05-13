@@ -2,7 +2,7 @@
 <h1>{{category}}</h1>
 <table class="table table-hover">
   <tbody>
-  {{#dataRows}}
+  {{#dataEntries}}{{#dataRows}}
     <tr>
     <td>{{lastChanged}}</td>
     <td>{{entry}}</td>
@@ -31,7 +31,7 @@
       <td>{{#level7}}{{level7}}{{/level7}}</td>
     {{/isLevel7}}
     </tr>
-  {{/dataRows}}
+  {{/dataRows}}{{/dataEntries}}
   </tbody>
 </table>
 {{/data.entries}}
