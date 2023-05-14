@@ -30,6 +30,40 @@ public class ApiController {
 		return "";
 	}
 
+	@PostMapping("/data/{domain}/{category}/{entry}/{level0}")
+	public String createNewDataLevel0(@PathVariable(value = "domain") String domain,
+			@PathVariable(value = "category") String category, @PathVariable(value = "entry") String entry,
+			@PathVariable(value = "level0") String level0) {
+		DataRequest dataRequest = new DataRequest();
+		dataRequest.setLevel0(level0);
+		apiService.createEntry(domain, category, entry, dataRequest);
+		return "";
+	}
+
+	@PostMapping("/data/{domain}/{category}/{entry}/{level0}/{level1}")
+	public String createNewDataLevel0(@PathVariable(value = "domain") String domain,
+			@PathVariable(value = "category") String category, @PathVariable(value = "entry") String entry,
+			@PathVariable(value = "level0") String level0, @PathVariable(value = "level1") String level1) {
+		DataRequest dataRequest = new DataRequest();
+		dataRequest.setLevel0(level0);
+		dataRequest.setLevel1(level1);
+		apiService.createEntry(domain, category, entry, dataRequest);
+		return "";
+	}
+
+	@PostMapping("/data/{domain}/{category}/{entry}/{level0}/{level1}/{level2}")
+	public String createNewDataLevel0(@PathVariable(value = "domain") String domain,
+			@PathVariable(value = "category") String category, @PathVariable(value = "entry") String entry,
+			@PathVariable(value = "level0") String level0, @PathVariable(value = "level1") String level1,
+			@PathVariable(value = "level2") String level2) {
+		DataRequest dataRequest = new DataRequest();
+		dataRequest.setLevel0(level0);
+		dataRequest.setLevel1(level1);
+		dataRequest.setLevel2(level2);
+		apiService.createEntry(domain, category, entry, dataRequest);
+		return "";
+	}
+
 	@GetMapping("/data")
 	public List<DataResponse> dataEntries() {
 		return apiService.getEntries();
