@@ -31,6 +31,10 @@ could be as follows.
 
 `{"level0": "Bruce Eckel", "level1": "9/10", "level2": "Read"}`
 
+Alternatively, the first two levels of attributes can be created via path parameters as well. E.g.
+ HTTP POST: `/api/data/[domain]/[category]/[entry]/[level0]`
+ HTTP POST: `/api/data/[domain]/[category]/[entry]/[level0]/[level1]`
+
 ### Query the data
 
 HTTP GET: 
