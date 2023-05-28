@@ -45,6 +45,10 @@ public class DataEntryService {
 		return dataEntryRepo.findAllByDomain(domain);
 	}
 	
+	public List<DataEntryEntity> getEntries(DomainEntity domain, String category) {
+		return dataEntryRepo.findAllByDomainAndCategory(domain, category);
+	}
+	
 	public void deleteEntry(DomainEntity domain, String category, String entry) {
 		Optional<DataEntryEntity> optionalDataEntryEntity = dataEntryRepo.findFirstByDomainAndCategoryAndEntry(domain, category, entry);
 		
@@ -53,6 +57,14 @@ public class DataEntryService {
 			
 			dataEntryRepo.delete(dee);
 		}
+	}
+	
+	public List<DataEntryEntity> deleteCategory(DomainEntity domain, String category) {
+		return dataEntryRepo.deleteByDomainAndCategory(domain, category);
+	}
+	
+	public List<DataEntryEntity> deleteDomain(DomainEntity domain) {
+		return dataEntryRepo.deleteByDomain(domain);
 	}
 	
 }

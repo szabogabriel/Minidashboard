@@ -38,4 +38,8 @@ public class DomainService {
 		return domainRepo.findDomainByName(name);
 	}
 	
+	public void deleteDomain(String name) {
+		domainRepo.deleteDomainByName(name);
+	}
+	
 }

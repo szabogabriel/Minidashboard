@@ -86,4 +86,17 @@ public class ApiController {
 		apiService.deleteEntry(domain, category, entry);
 		return "";
 	}
+	
+	@DeleteMapping("/data/{domain}/{category}")
+	public String deleteCategory(@PathVariable(value = "domain") String domain,
+			@PathVariable(value = "category") String category) {
+		apiService.deleteCategory(domain, category);
+		return "";
+	}
+	
+	@DeleteMapping("/data/{domain}")
+	public String deleteCategory(@PathVariable(value = "domain") String domain) {
+		apiService.deleteDomain(domain);
+		return "";
+	}
 }

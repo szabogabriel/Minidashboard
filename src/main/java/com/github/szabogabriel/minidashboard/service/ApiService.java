@@ -31,6 +31,25 @@ public class ApiService {
 		}
 	}
 	
+	public void deleteCategory(String domain, String category) {
+		Optional<DomainEntity> domainEntity = domainService.getDomain(domain);
+
+		if (domainEntity.isPresent()) {
+			dataEntryService.deleteCategory(domainEntity.get(), category);
+		}
+		
+	}
+	
+	public void deleteDomain(String domain) {
+		Optional<DomainEntity> domainEntity = domainService.getDomain(domain);
+
+		if (domainEntity.isPresent()) {
+			dataEntryService.deleteDomain(domainEntity.get());
+			
+			domainService.deleteDomain(domain);
+		}
+	}
+	
 	public void createEntry(String domainName, String category, String entry, DataRequest attributes) {
 		DataEntryEntity dee = new DataEntryEntity();
 
