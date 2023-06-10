@@ -45,18 +45,35 @@ public class GuiService {
 		Optional<DomainEntity> dom = domainService.getDomain(domain);
 
 		if (dom.isPresent()) {
-			ret = map(dataEntryService.getCurrentEntries(dom.get()).stream().sorted(this::comparator)
+			ret = map(dataEntryService.getCurrentEntries(dom.get()).stream().sorted(this::sortByEntry)
 					.collect(Collectors.toList()));
 		}
 
-		return ret.stream().sorted(this::comparator).collect(Collectors.toList());
+		return ret.stream().sorted(this::sortByCategory).collect(Collectors.toList());
 	}
-	
-	private int comparator(DataCategoryGui g1, DataCategoryGui g2) {
+
+	public List<DataCategoryGui> getHistoricData(String domain, String category, String entry) {
+		List<DataCategoryGui> ret = new ArrayList<>();
+
+		Optional<DomainEntity> dom = domainService.getDomain(domain);
+
+		if (dom.isPresent()) {
+			ret = map(dataEntryService.getEntries(dom.get(), category, entry).stream().sorted(this::sortByLastModified)
+					.collect(Collectors.toList()));
+		}
+
+		return ret;
+	}
+
+	private int sortByCategory(DataCategoryGui g1, DataCategoryGui g2) {
 		return g1.getCategory().compareTo(g2.getCategory());
 	}
 
-	private int comparator(DataEntryEntity e1, DataEntryEntity e2) {
+	private int sortByLastModified(DataEntryEntity e1, DataEntryEntity e2) {
+		return (int) (e1.getCreateTimestamp() - e2.getCreateTimestamp());
+	}
+
+	private int sortByEntry(DataEntryEntity e1, DataEntryEntity e2) {
 		return e1.getEntry().compareTo(e2.getEntry());
 	}
 
@@ -94,7 +111,14 @@ public class GuiService {
 		DataEntryGui ret = new DataEntryGui();
 
 		ret.setEntry(dataEntryEntity.getEntry());
+		ret.setCreated(format(DateUtils.fromMillies(dataEntryEntity.getCreateTimestamp())));
 		ret.setLastChanged(format(DateUtils.fromMillies(dataEntryEntity.getLastModified())));
+		if (dataEntryEntity.getValidUntil() != null) {
+			ret.setValidTo(format(DateUtils.fromMillies(dataEntryEntity.getValidUntil())));
+		} else {
+			ret.setValidTo("");
+		}
+		ret.setDomain(dataEntryEntity.getDomain().getName());
 
 		DataRowGui drg = mapToRowGui(dataEntryEntity);
 		ret.addDataRow(drg);

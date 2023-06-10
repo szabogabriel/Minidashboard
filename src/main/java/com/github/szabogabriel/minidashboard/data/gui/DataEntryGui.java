@@ -7,10 +7,14 @@ import lombok.Data;
 
 @Data
 public class DataEntryGui {
+
+	private String domain;
 	
 	private String entry;
 	
 	private String lastChanged;
+	private String created;
+	private String validTo;
 	
 	private Boolean isLevel0 = Boolean.FALSE;
 	private Boolean isLevel1 = Boolean.FALSE;

@@ -2,9 +2,41 @@
 <h1>{{category}}</h1>
 <table class="table table-hover">
   <tbody>
+    <tr>
+    <th>Created</th>
+    <th>Last Changed</th>
+    <th>Valid Until</th>
+    <th>Entry</th>
+    {{#isLevel0}}
+      <th>Level 0</td>
+    {{/isLevel0}}
+    {{#isLevel1}}
+      <th>Level 1</th>
+    {{/isLevel1}}
+    {{#isLevel2}}
+      <th>Level 2</th>
+    {{/isLevel2}}
+    {{#isLevel3}}
+      <th>Level 3</th>
+    {{/isLevel3}}
+    {{#isLevel4}}
+      <th>Level 4</th>
+    {{/isLevel4}}
+    {{#isLevel5}}
+      <th>Level 5</th>
+    {{/isLevel5}}
+    {{#isLevel6}}
+      <th>Level 6</th>
+    {{/isLevel6}}
+    {{#isLevel7}}
+      <th>Level 7</th>
+    {{/isLevel7}}
+    <tr>
   {{#dataEntries}}{{#dataRows}}
     <tr>
+    <td>{{created}}</td>
     <td>{{lastChanged}}</td>
+    <td>{{validTo}}</td>
     <td>{{entry}}</td>
     {{#isLevel0}}
       <td>{{#level0}}{{level0}}{{/level0}}</td>
@@ -30,7 +62,6 @@
     {{#isLevel7}}
       <td>{{#level7}}{{level7}}{{/level7}}</td>
     {{/isLevel7}}
-      <td><a href="history/{{domain}}/{{category}}/{{entry}}">History</a></td>
     </tr>
   {{/dataRows}}{{/dataEntries}}
   </tbody>

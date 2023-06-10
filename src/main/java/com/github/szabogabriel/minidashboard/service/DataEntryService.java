@@ -57,6 +57,10 @@ public class DataEntryService {
 		return dataEntryRepo.findAllByDomainAndCategory(domain, category);
 	}
 	
+	public List<DataEntryEntity> getEntries(DomainEntity domain, String category, String entry) {
+		return dataEntryRepo.findAllByDomainAndCategoryAndEntry(domain, category, entry);
+	}
+	
 	public void deleteEntry(DomainEntity domain, String category, String entry) {
 		Optional<DataEntryEntity> optionalDataEntryEntity = dataEntryRepo.findFirstByDomainAndCategoryAndEntry(domain, category, entry);
 		
