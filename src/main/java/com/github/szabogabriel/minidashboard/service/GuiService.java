@@ -29,10 +29,10 @@ public class GuiService {
 
 	@Autowired
 	private DomainService domainService;
-	
+
 	@Value("${gui.date.format}")
 	private String dateFormat;
-	
+
 	private DateTimeFormatter dtf = null;
 
 	public List<IndexDomainEntry> getIndexDomainEntries(String selectedDomain) {
@@ -45,10 +45,19 @@ public class GuiService {
 		Optional<DomainEntity> dom = domainService.getDomain(domain);
 
 		if (dom.isPresent()) {
-			ret = map(dataEntryService.getCurrentEntries(dom.get()));
+			ret = map(dataEntryService.getCurrentEntries(dom.get()).stream().sorted(this::comparator)
+					.collect(Collectors.toList()));
 		}
 
-		return ret;
+		return ret.stream().sorted(this::comparator).collect(Collectors.toList());
+	}
+	
+	private int comparator(DataCategoryGui g1, DataCategoryGui g2) {
+		return g1.getCategory().compareTo(g2.getCategory());
+	}
+
+	private int comparator(DataEntryEntity e1, DataEntryEntity e2) {
+		return e1.getEntry().compareTo(e2.getEntry());
 	}
 
 	private IndexDomainEntry map(String name, String selected) {
@@ -71,7 +80,7 @@ public class GuiService {
 			} else {
 				dcg = tmp.get(it.getCategory());
 			}
-			
+
 			dcg.addDataEntry(mapToEntryGui(it));
 			tmp.put(it.getCategory(), dcg);
 		}
@@ -80,19 +89,19 @@ public class GuiService {
 
 		return ret;
 	}
-	
+
 	private DataEntryGui mapToEntryGui(DataEntryEntity dataEntryEntity) {
 		DataEntryGui ret = new DataEntryGui();
 
 		ret.setEntry(dataEntryEntity.getEntry());
 		ret.setLastChanged(format(DateUtils.fromMillies(dataEntryEntity.getLastModified())));
-		
+
 		DataRowGui drg = mapToRowGui(dataEntryEntity);
 		ret.addDataRow(drg);
-		
+
 		return ret;
 	}
-	
+
 	private String format(LocalDateTime date) {
 		if (dtf == null) {
 			dtf = DateTimeFormatter.ofPattern(dateFormat);

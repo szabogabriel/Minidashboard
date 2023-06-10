@@ -37,7 +37,6 @@ public class DataEntryGui {
 		if (row.getLevel5() != null) isLevel5 = Boolean.TRUE;
 		if (row.getLevel6() != null) isLevel6 = Boolean.TRUE;
 		if (row.getLevel7() != null) isLevel7 = Boolean.TRUE;
-		
 	}
 
 }
