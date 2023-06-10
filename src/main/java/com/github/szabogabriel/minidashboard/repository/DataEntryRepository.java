@@ -18,6 +18,8 @@ public interface DataEntryRepository extends JpaRepository<DataEntryEntity, Long
 	
 	public List<DataEntryEntity> findAllByDomainAndCategory(DomainEntity domain, String category);
 	
+	public List<DataEntryEntity> findAllByDomainAndCategoryAndEntry(DomainEntity domain, String category, String entry);
+	
 	public Optional<DataEntryEntity> findFirstByDomainAndCategoryAndEntry(DomainEntity domain, String category, String entry);
 	
 	public List<DataEntryEntity> deleteByDomainAndCategory(DomainEntity domain, String category);

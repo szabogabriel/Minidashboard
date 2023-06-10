@@ -36,5 +36,8 @@ public class DataEntryEntity {
 	
 	private Long createTimestamp;
 	private Long lastModified;
+	private Long validUntil;
+	
+	private Long version;
 
 }

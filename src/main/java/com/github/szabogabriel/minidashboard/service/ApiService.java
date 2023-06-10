@@ -49,7 +49,7 @@ public class ApiService {
 			domainService.deleteDomain(domain);
 		}
 	}
-	
+
 	public void createEntry(String domainName, String category, String entry, DataRequest attributes) {
 		DataEntryEntity dee = new DataEntryEntity();
 
@@ -67,7 +67,7 @@ public class ApiService {
 		dee.setLevel5(attributes.getLevel5());
 		dee.setLevel6(attributes.getLevel6());
 		dee.setLevel7(attributes.getLevel7());
-
+		
 		dataEntryService.createEntry(dee);
 	}
 

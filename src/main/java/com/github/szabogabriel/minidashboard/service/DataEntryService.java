@@ -17,26 +17,30 @@ public class DataEntryService {
 	private DataEntryRepository dataEntryRepo;
 
 	public void createEntry(DataEntryEntity entity) {
-		Optional<DataEntryEntity> tmp = dataEntryRepo.findFirstByDomainAndCategoryAndEntry(entity.getDomain(), entity.getCategory(), entity.getEntry());
+		List<DataEntryEntity> tmp = dataEntryRepo.findAllByDomainAndCategoryAndEntry(entity.getDomain(), entity.getCategory(), entity.getEntry());
+		entity.setCreateTimestamp(System.currentTimeMillis());
+		entity.setLastModified(entity.getCreateTimestamp());
+		
 		if (tmp.isEmpty()) {
-			entity.setCreateTimestamp(System.currentTimeMillis());
-			entity.setLastModified(entity.getCreateTimestamp());
+			entity.setVersion(1L);
 			dataEntryRepo.save(entity);
 		} else {
-			DataEntryEntity dee = tmp.get();
-			dee.setLevel0(entity.getLevel0());
-			dee.setLevel1(entity.getLevel1());
-			dee.setLevel2(entity.getLevel2());
-			dee.setLevel3(entity.getLevel3());
-			dee.setLevel4(entity.getLevel4());
-			dee.setLevel5(entity.getLevel5());
-			dee.setLevel6(entity.getLevel6());
-			dee.setLevel7(entity.getLevel7());
-			dee.setLastModified(System.currentTimeMillis());
+			DataEntryEntity dee = tmp.stream().sorted((e1, e2) -> e2.getVersion().compareTo(e1.getVersion())).findFirst().orElse(null);
+			dee.setValidUntil(entity.getCreateTimestamp());
+			dee.setLastModified(entity.getCreateTimestamp());
+			
+			Long oldVersion = dee.getVersion();
+			if (oldVersion == null) {
+				oldVersion = 1L;
+				dee.setVersion(oldVersion);
+			}
+			entity.setVersion(oldVersion + 1);
+			
 			dataEntryRepo.save(dee);
+			dataEntryRepo.save(entity);
 		}
 	}
-
+	
 	public List<DataEntryEntity> getEntries() {
 		return dataEntryRepo.findAll();
 	}
