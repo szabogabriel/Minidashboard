@@ -39,13 +39,13 @@ public class GuiService {
 		return domainService.getDomainNames().stream().map(e -> map(e, selectedDomain)).collect(Collectors.toList());
 	}
 
-	public List<DataCategoryGui> getDomainData(String domain) {
+	public List<DataCategoryGui> getCurrentDomainData(String domain) {
 		List<DataCategoryGui> ret = new ArrayList<>();
 
 		Optional<DomainEntity> dom = domainService.getDomain(domain);
 
 		if (dom.isPresent()) {
-			ret = map(dataEntryService.getEntries(dom.get()));
+			ret = map(dataEntryService.getCurrentEntries(dom.get()));
 		}
 
 		return ret;

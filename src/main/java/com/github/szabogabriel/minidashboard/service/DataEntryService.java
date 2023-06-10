@@ -49,6 +49,10 @@ public class DataEntryService {
 		return dataEntryRepo.findAllByDomain(domain);
 	}
 	
+	public List<DataEntryEntity> getCurrentEntries(DomainEntity domain) {
+		return dataEntryRepo.findAllByDomainAndValidUntil(domain, null);
+	}
+	
 	public List<DataEntryEntity> getEntries(DomainEntity domain, String category) {
 		return dataEntryRepo.findAllByDomainAndCategory(domain, category);
 	}

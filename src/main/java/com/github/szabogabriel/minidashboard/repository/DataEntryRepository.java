@@ -16,6 +16,8 @@ public interface DataEntryRepository extends JpaRepository<DataEntryEntity, Long
 	
 	public List<DataEntryEntity> findAllByDomain(DomainEntity domain);
 	
+	public List<DataEntryEntity> findAllByDomainAndValidUntil(DomainEntity domain, Long validUntil);
+	
 	public List<DataEntryEntity> findAllByDomainAndCategory(DomainEntity domain, String category);
 	
 	public List<DataEntryEntity> findAllByDomainAndCategoryAndEntry(DomainEntity domain, String category, String entry);

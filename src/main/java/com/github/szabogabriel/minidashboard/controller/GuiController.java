@@ -21,7 +21,7 @@ public class GuiController {
     	ret.setViewName("page");
 
     	ret.addObject("known.domains", guiService.getIndexDomainEntries(domain));
-    	ret.addObject("data.entries", guiService.getDomainData(domain));
+    	ret.addObject("data.entries", guiService.getCurrentDomainData(domain));
     	
     	if (domain != null && domain.trim().length() > 0) {
     		ret.addObject("show.data", Boolean.TRUE);
