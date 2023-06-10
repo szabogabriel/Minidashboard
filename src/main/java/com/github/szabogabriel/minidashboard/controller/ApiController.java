@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.szabogabriel.minidashboard.data.api.DataRequest;
@@ -82,18 +83,19 @@ public class ApiController {
 
 	@DeleteMapping("/data/{domain}/{category}/{entry}")
 	public String deleteData(@PathVariable(value = "domain") String domain,
-			@PathVariable(value = "category") String category, @PathVariable(value = "entry") String entry) {
-		apiService.deleteEntry(domain, category, entry);
+			@PathVariable(value = "category") String category, @PathVariable(value = "entry") String entry,
+			@RequestParam(defaultValue = "true") String softDelete) {
+		apiService.deleteEntry(domain, category, entry, Boolean.parseBoolean(softDelete));
 		return "";
 	}
-	
+
 	@DeleteMapping("/data/{domain}/{category}")
 	public String deleteCategory(@PathVariable(value = "domain") String domain,
 			@PathVariable(value = "category") String category) {
 		apiService.deleteCategory(domain, category);
 		return "";
 	}
-	
+
 	@DeleteMapping("/data/{domain}")
 	public String deleteCategory(@PathVariable(value = "domain") String domain) {
 		apiService.deleteDomain(domain);

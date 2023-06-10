@@ -61,13 +61,21 @@ public class DataEntryService {
 		return dataEntryRepo.findAllByDomainAndCategoryAndEntry(domain, category, entry);
 	}
 	
-	public void deleteEntry(DomainEntity domain, String category, String entry) {
+	public void deleteEntry(DomainEntity domain, String category, String entry, boolean soft) {
 		Optional<DataEntryEntity> optionalDataEntryEntity = dataEntryRepo.findFirstByDomainAndCategoryAndEntry(domain, category, entry);
 		
 		if (optionalDataEntryEntity.isPresent()) {
 			DataEntryEntity dee = optionalDataEntryEntity.get();
-			
-			dataEntryRepo.delete(dee);
+
+			if (soft) {
+				Long timestamp = System.currentTimeMillis();
+				dee.setLastModified(timestamp);
+				dee.setValidUntil(timestamp);
+				
+				dataEntryRepo.save(dee);
+			} else {
+				dataEntryRepo.delete(dee);
+			}
 		}
 	}
 	
