@@ -42,7 +42,11 @@ HTTP GET:
 `/api/data/[domain]/[category]`
 
 ### Delete the data
+Set 'validTo' field of entry
 HTTP DELETE: `/api/data/[domain]/[category]/[entry]`
+
+Enforce removing historized data
+HTTP DELETE: `/api/data/[domain]/[category]/[entry]?softDelete=false`
 
 
 ## Container
