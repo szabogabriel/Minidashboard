@@ -1,8 +1,14 @@
 package com.github.szabogabriel.minidashboard.controller;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.szabogabriel.minidashboard.data.api.DataRequest;
 import com.github.szabogabriel.minidashboard.data.api.DataResponse;
+import com.github.szabogabriel.minidashboard.data.api.FileResponse;
 import com.github.szabogabriel.minidashboard.service.ApiService;
 
 @RestController
@@ -65,6 +73,43 @@ public class ApiController {
 		return "";
 	}
 
+	@PostMapping("/file")
+	public String uploadFile(@RequestParam MultipartFile file) {
+		String ret = "";
+		try {
+			String fileName = file.getOriginalFilename();
+			InputStream in = file.getInputStream();
+			String mimeType = file.getContentType();
+			Long size = file.getSize();
+			
+			ret = apiService.createFile(in, fileName, mimeType, size);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	@GetMapping("/file")
+	public List<FileResponse> getAllFiles() {
+		return apiService.getAllFile();
+	}
+	
+	@GetMapping("/file/{fileId}")
+	public ResponseEntity<Resource> getFileContent(@PathVariable(value = "fileId") String fileId) {
+		FileResponse fr = apiService.getFile(Long.parseLong(fileId));
+		
+		Resource res = new InputStreamResource(fr.getInputStream());
+		
+		HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("filename", fr.getFileName());
+		
+        return ResponseEntity.ok()
+                .headers(headers)
+//                .contentLength(fileBytes.length) //TODO
+                .body(res);
+	}
+	
 	@GetMapping("/data")
 	public List<DataResponse> dataEntries() {
 		return apiService.getEntries();
@@ -100,5 +145,17 @@ public class ApiController {
 	public String deleteCategory(@PathVariable(value = "domain") String domain) {
 		apiService.deleteDomain(domain);
 		return "";
+	}
+	
+	@DeleteMapping("/file/{fileId}")
+	public void deleteFileContent(@PathVariable(value = "fileId") String fileId) {
+		if (fileId != null) {
+			try {
+				Long fileIdLong = Long.parseLong(fileId);
+				apiService.removeFile(fileIdLong);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

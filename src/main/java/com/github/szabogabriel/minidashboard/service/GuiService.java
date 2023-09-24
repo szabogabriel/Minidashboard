@@ -15,9 +15,11 @@ import org.springframework.stereotype.Service;
 
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
+import com.github.szabogabriel.minidashboard.data.entites.FileEntity;
 import com.github.szabogabriel.minidashboard.data.gui.DataCategoryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataEntryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataRowGui;
+import com.github.szabogabriel.minidashboard.data.gui.FileGui;
 import com.github.szabogabriel.minidashboard.data.gui.IndexDomainEntry;
 import com.github.szabogabriel.minidashboard.util.DateUtils;
 
@@ -29,6 +31,9 @@ public class GuiService {
 
 	@Autowired
 	private DomainService domainService;
+	
+	@Autowired
+	private FileService fileService;
 
 	@Value("${gui.date.format}")
 	private String dateFormat;
@@ -63,6 +68,14 @@ public class GuiService {
 		}
 
 		return ret;
+	}
+	
+	public List<FileGui> getFiles() {
+		return fileService.getAllEntries().stream().map(this::map).collect(Collectors.toList());
+	}
+	
+	public void deleteFile(Long fileId) {
+		fileService.removeFile(fileId);
 	}
 
 	private int sortByCategory(DataCategoryGui g1, DataCategoryGui g2) {
@@ -106,7 +119,7 @@ public class GuiService {
 
 		return ret;
 	}
-
+	
 	private DataEntryGui mapToEntryGui(DataEntryEntity dataEntryEntity) {
 		DataEntryGui ret = new DataEntryGui();
 
@@ -123,6 +136,17 @@ public class GuiService {
 		DataRowGui drg = mapToRowGui(dataEntryEntity);
 		ret.addDataRow(drg);
 
+		return ret;
+	}
+	
+	private FileGui map(FileEntity file) {
+		FileGui ret = new FileGui();
+		
+		ret.setCreateTime(DateUtils.fromMillies(file.getCreateTimestamp()));
+		ret.setFileName(file.getFileName());
+		ret.setId(file.getFile_id());
+		ret.setMimeType(file.getMimeType());
+		
 		return ret;
 	}
 

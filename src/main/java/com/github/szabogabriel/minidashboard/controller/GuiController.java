@@ -47,5 +47,30 @@ public class GuiController {
 		
 		return ret;
 	}
+	
+	@GetMapping("/files")
+	public ModelAndView files() {
+		ModelAndView ret = new ModelAndView();
+		
+		ret.setViewName("page");
+		ret.addObject("show.files", Boolean.TRUE);
+		ret.addObject("known.domains", guiService.getIndexDomainEntries(""));
+		ret.addObject("fileEntries", guiService.getFiles());
+		
+		return ret;
+	}
+	
+	@GetMapping("/file/delete/{fileId}")
+	public ModelAndView fileDelete(@PathVariable("fileId")String fileId) {
+		if (fileId != null) {
+			try {
+				Long fileIdLong = Long.parseLong(fileId);
+				guiService.deleteFile(fileIdLong);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return files();
+	}
 
 }

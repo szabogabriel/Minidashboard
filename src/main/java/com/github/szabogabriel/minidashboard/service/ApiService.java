@@ -1,5 +1,7 @@
 package com.github.szabogabriel.minidashboard.service;
 
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.github.szabogabriel.minidashboard.data.api.DataRequest;
 import com.github.szabogabriel.minidashboard.data.api.DataResponse;
+import com.github.szabogabriel.minidashboard.data.api.FileResponse;
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
+import com.github.szabogabriel.minidashboard.data.entites.FileEntity;
 import com.github.szabogabriel.minidashboard.util.DateUtils;
 
 @Service
@@ -19,6 +23,9 @@ public class ApiService {
 
 	@Autowired
 	private DataEntryService dataEntryService;
+	
+	@Autowired
+	private FileService fileService;
 
 	@Autowired
 	private DomainService domainService;
@@ -89,6 +96,47 @@ public class ApiService {
 
 	public List<DataResponse> getEntries(String domain, String category) {
 		return getEntries(domain).stream().filter(e -> e.getCategory().equals(category)).collect(Collectors.toList());
+	}
+	
+	public String createFile(InputStream is, String fileName, String mimeType, long size) {
+		Long id = fileService.uploadFile(is, fileName, mimeType, size);
+
+		return "" + id;
+	}
+	
+	public List<FileResponse> getAllFile() {
+		return fileService.getAllEntries().stream().map(this::map).collect(Collectors.toList());
+	}
+	
+	public FileResponse getFile(Long id) {
+		FileResponse ret = null;
+		Optional<FileEntity> file = fileService.getFileInputStream(id);
+		
+		if (file.isPresent()) {
+			ret = map(file.get());
+			try {
+				ret.setInputStream(file.get().getBinaryContent().getBinaryStream());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return ret;
+	}
+	
+	public void removeFile(Long id) {
+		fileService.removeFile(id);
+	}
+	
+	private FileResponse map(FileEntity fe) {
+		FileResponse ret = new FileResponse();
+		
+		ret.setCreateTime(DateUtils.fromMillies(fe.getCreateTimestamp()));
+		ret.setFileName(fe.getFileName());
+		ret.setId(fe.getFile_id());
+		ret.setMimeType(fe.getMimeType());
+		
+		return ret;
 	}
 
 	private DataResponse map(DataEntryEntity dee) {

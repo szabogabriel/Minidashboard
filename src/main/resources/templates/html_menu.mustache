@@ -6,6 +6,10 @@
           <ul class="nav navbar-nav">
             {{#known.domains}}<li{{#selected}} class="active"{{/selected}}><a href="/index?domain={{name}}">{{name}}</a></li>{{/known.domains}}
           </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li {{#show.files}}class="active"{{/show.files}}><a href="/files">Files</a></li>
+          </ul>
           
           <!--
           <ul class="nav navbar-nav navbar-right">

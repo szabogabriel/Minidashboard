@@ -1,0 +1,22 @@
+<h1>Available files</h1>
+<table class="table table-hover">
+  <thead>
+    <th>File name</th>
+    <th>Mime type</th>
+    <th>Created at</th>
+    <th>Download link</th>
+    <th>Delete link</th>
+  </thead>
+  </thead>
+  <tbody>
+  {{#fileEntries}}
+    <tr>
+    <td>{{fileName}}</td>
+    <td>{{mimeType}}</td>
+    <td>{{createTime}}</td>
+    <td><a href="/api/file/{{id}}">Download</a></td>
+    <td><a href="/file/delete/{{id}}">Delete</a></td>
+    </tr>
+  {{/fileEntries}}
+  </tbody>
+</table>
