@@ -14,6 +14,11 @@ public class GuiController {
 
 	@Autowired
 	private GuiService guiService;
+	
+	@GetMapping("/")
+	public ModelAndView indexEmpty() {
+		return index("");
+	}
 
 	@GetMapping("/index")
 	public ModelAndView index(@RequestParam(defaultValue = "") String domain) {
