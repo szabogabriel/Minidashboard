@@ -36,6 +36,10 @@ could be as follows.
 Alternatively, the first two levels of attributes can be created via path parameters as well. E.g.
  HTTP POST: `/api/data/[domain]/[category]/[entry]/[level0]`
  HTTP POST: `/api/data/[domain]/[category]/[entry]/[level0]/[level1]`
+ 
+CURL Example of creating data with link.
+ 
+ `curl -X POST -d '{"level0": "Payed", "level1": "May", "level2": "<a href=\"/data\">Data</a>"}' -H "Content-type: application/json" http://localhost:8080/api/data/Home/Invoices/Phone`
 
 #### Query the data
 
