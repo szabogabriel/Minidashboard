@@ -9,13 +9,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.engine.config.spi.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.github.szabogabriel.minidashboard.data.entites.ConfigurationEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
 import com.github.szabogabriel.minidashboard.data.entites.FileEntity;
+import com.github.szabogabriel.minidashboard.data.enums.ConfigurationEnum;
+import com.github.szabogabriel.minidashboard.data.gui.ConfigurationGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataCategoryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataEntryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataRowGui;
@@ -25,6 +29,9 @@ import com.github.szabogabriel.minidashboard.util.DateUtils;
 
 @Service
 public class GuiService {
+
+	@Autowired
+	private ConfigService configService;
 
 	@Autowired
 	private DataEntryService dataEntryService;
@@ -72,6 +79,20 @@ public class GuiService {
 	
 	public List<FileGui> getFiles() {
 		return fileService.getAllEntries().stream().map(this::map).collect(Collectors.toList());
+	}
+
+	public List<ConfigurationGui> getConfigs() {
+		return configService.getAllEntries().stream().map(this::map).collect(Collectors.toList());
+	}
+
+	public void updateConfigs(String key, String value) {
+		if (key != null && value != null) {
+			configService.setValue(key, value);
+		}
+	}
+
+	public String getPageTitle() {
+		return configService.getValue(ConfigurationEnum.APPLICATION_NAME);
 	}
 	
 	public void deleteFile(Long fileId) {
@@ -146,6 +167,15 @@ public class GuiService {
 		ret.setFileName(file.getFileName());
 		ret.setId(file.getFile_id());
 		ret.setMimeType(file.getMimeType());
+		
+		return ret;
+	}
+
+	private ConfigurationGui map(ConfigurationEntity entity) {
+		ConfigurationGui ret = new ConfigurationGui();
+
+		ret.setKey(entity.getConfKey());
+		ret.setValue(entity.getConfValue());
 		
 		return ret;
 	}

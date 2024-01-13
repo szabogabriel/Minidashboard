@@ -1,0 +1,15 @@
+2024-01-12 23:15:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table configuration_entity (config_id bigint not null, [*]key varchar(255), value varchar(255), primary key (config_id))"; expected "identifier"; SQL statement:
+create table configuration_entity (config_id bigint not null, key varchar(255), value varchar(255), primary key (config_id)) [42001-214]
+2024-01-12 23:59:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table configuration_entity (config_id bigint not null, conf_key varchar(255), [*]value varchar(255), primary key (config_id))"; expected "identifier"; SQL statement:
+create table configuration_entity (config_id bigint not null, conf_key varchar(255), value varchar(255), primary key (config_id)) [42001-214]
+2024-01-13 00:00:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table configuration_entity (config_id bigint not null, conf_key varchar(255), [*]value varchar(255), primary key (config_id))"; expected "identifier"; SQL statement:
+create table configuration_entity (config_id bigint not null, conf_key varchar(255), value varchar(255), primary key (config_id)) [42001-214]
+2024-01-13 00:00:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table configuration_entity (config_id bigint not null, conf_key varchar(255), [*]value varchar(255), primary key (config_id))"; expected "identifier"; SQL statement:
+create table configuration_entity (config_id bigint not null, conf_key varchar(255), value varchar(255), primary key (config_id)) [42001-214]
+2024-01-13 00:01:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table configuration_entity (config_id bigint not null, conf_key varchar(255), [*]value varchar(255), primary key (config_id))"; expected "identifier"; SQL statement:
+create table configuration_entity (config_id bigint not null, conf_key varchar(255), value varchar(255), primary key (config_id)) [42001-214]

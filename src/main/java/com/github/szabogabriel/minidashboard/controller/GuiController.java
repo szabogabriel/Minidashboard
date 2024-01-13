@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +23,7 @@ public class GuiController {
 
 	@GetMapping("/index")
 	public ModelAndView index(@RequestParam(defaultValue = "") String domain) {
-		ModelAndView ret = new ModelAndView();
+		ModelAndView ret = createModelAndView();
 
 		ret.setViewName("page");
 
@@ -39,7 +40,7 @@ public class GuiController {
 	@GetMapping("/history/{domain}/{category}/{entry}")
 	public ModelAndView history(@PathVariable("domain") String domain, @PathVariable("category") String category,
 			@PathVariable("entry") String entry) {
-		ModelAndView ret = new ModelAndView();
+		ModelAndView ret = createModelAndView();
 		
 		ret.setViewName("page");
 		
@@ -55,7 +56,7 @@ public class GuiController {
 	
 	@GetMapping("/files")
 	public ModelAndView files() {
-		ModelAndView ret = new ModelAndView();
+		ModelAndView ret = createModelAndView();
 		
 		ret.setViewName("page");
 		ret.addObject("show.files", Boolean.TRUE);
@@ -76,6 +77,30 @@ public class GuiController {
 			}
 		}
 		return files();
+	}
+
+	@GetMapping("/config")
+	public ModelAndView getConfig() {
+		ModelAndView ret = createModelAndView();
+
+		ret.setViewName("page");
+		ret.addObject("show.config", Boolean.TRUE);
+		ret.addObject("config.values", guiService.getConfigs());
+
+		return ret;
+	}
+
+	@PostMapping("/config")
+	public ModelAndView updateConfig(@RequestParam("key") String key, @RequestParam("value") String value) {
+		guiService.updateConfigs(key, value);
+
+		return getConfig();
+	}
+
+	private ModelAndView createModelAndView() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("page.title", guiService.getPageTitle());
+		return modelAndView;
 	}
 
 }
