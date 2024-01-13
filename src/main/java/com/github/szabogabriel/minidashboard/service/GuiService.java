@@ -94,6 +94,54 @@ public class GuiService {
 	public String getPageTitle() {
 		return configService.getValue(ConfigurationEnum.APPLICATION_NAME);
 	}
+
+	public String getMenuFiles() {
+		return configService.getValue(ConfigurationEnum.MENU_FILES);
+	}
+
+	public String getButtonSubmit() {
+		return configService.getValue(ConfigurationEnum.BUTTON_SUBMIT);
+	}
+
+	public String getViewFilesTitle() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_TITLE);
+	}
+
+	public String getViewFilesFileName() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_FILE_NAME);
+	}
+
+	public String getViewFilesMimeType() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_MIME_TYPE);
+	}
+
+	public String getViewFilesCreatedAt() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_CREATED_AT);
+	}
+
+	public String getViewFilesViewLink() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_VIEW_LINK);
+	}
+
+	public String getViewFilesDownloadLink() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_DOWNLOAD_LINK);
+	}
+
+	public String getViewFilesDeleteLink() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_DELETE_LINK);
+	}
+
+	public String getViewFilesView() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_VIEW);
+	}
+
+	public String getViewFilesDownload() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_DOWNLOAD);
+	}
+
+	public String getViewFilesDelete() {
+		return configService.getValue(ConfigurationEnum.VIEW_FILES_DELETE);
+	}
 	
 	public void deleteFile(Long fileId) {
 		fileService.removeFile(fileId);

@@ -11,9 +11,9 @@
   {{#config.values}}
     <tr>
     <form action="/config" method="POST">
-      <td><input type="hidden" id="key" name="key" value="{{key}}"></input>{{key}}</td>
+      <td><input type="hidden" id="key" name="key" value="{{key}}"/>{{key}}</td>
       <td><input type="input" id="value" name="value" value="{{value}}"></td></td>
-      <td><input type="submit"></input></td>
+      <td><input type="submit" value="{{button.submit}}"/></td>
     </form>
     </tr>
   {{/config.values}}

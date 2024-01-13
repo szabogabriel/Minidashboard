@@ -1,11 +1,12 @@
-<h1>Available files</h1>
+<h1>{{view.files.title}}</h1>
 <table class="table table-hover">
   <thead>
-    <th>File name</th>
-    <th>Mime type</th>
-    <th>Created at</th>
-    <th>Download link</th>
-    <th>Delete link</th>
+    <th>{{view.files.file.name}}</th>
+    <th>{{view.files.mime.type}}</th>
+    <th>{{view.files.created.at}}</th>
+    <th>{{view.files.view.link}}</th>
+    <th>{{view.files.download.link}}</th>
+    <th>{{view.files.delete.link}}</th>
   </thead>
   </thead>
   <tbody>
@@ -14,8 +15,9 @@
     <td>{{fileName}}</td>
     <td>{{mimeType}}</td>
     <td>{{createTime}}</td>
-    <td><a href="/api/file/{{id}}">Download</a></td>
-    <td><a href="/file/delete/{{id}}">Delete</a></td>
+    <td><a href="/guifile/{{id}}">{{view.files.view}}</a></td>
+    <td><a href="/api/file/{{id}}">{{view.files.download}}</a></td>
+    <td><a href="/file/delete/{{id}}">{{view.files.delete}}</a></td>
     </tr>
   {{/fileEntries}}
   </tbody>

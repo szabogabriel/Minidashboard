@@ -100,6 +100,18 @@ public class GuiController {
 	private ModelAndView createModelAndView() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("page.title", guiService.getPageTitle());
+		modelAndView.addObject("menu.files", guiService.getMenuFiles());
+		modelAndView.addObject("button.submit", guiService.getButtonSubmit());
+		modelAndView.addObject("view.files.title", guiService.getViewFilesTitle());
+		modelAndView.addObject("view.files.file.name", guiService.getViewFilesFileName());
+		modelAndView.addObject("view.files.mime.type", guiService.getViewFilesMimeType());
+		modelAndView.addObject("view.files.created.at", guiService.getViewFilesCreatedAt());
+		modelAndView.addObject("view.files.view.link", guiService.getViewFilesViewLink());
+		modelAndView.addObject("view.files.download.link", guiService.getViewFilesDownloadLink());
+		modelAndView.addObject("view.files.delete.link", guiService.getViewFilesDeleteLink());
+		modelAndView.addObject("view.files.view", guiService.getViewFilesView());
+		modelAndView.addObject("view.files.download", guiService.getViewFilesDownload());
+		modelAndView.addObject("view.files.delete", guiService.getViewFilesDelete());
 		return modelAndView;
 	}
 
