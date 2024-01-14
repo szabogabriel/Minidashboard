@@ -7,6 +7,7 @@ public class RenderableObject {
     private List<AttributeList> attributeList = new ArrayList<>();
     private List<RenderableObject> objectList = new ArrayList<>();
     private String objectTitle = "";
+    private String content = "";
 
     public void setObjectTitle(String title) {
         this.objectTitle = title;
@@ -18,6 +19,10 @@ public class RenderableObject {
 
     public void addObject(RenderableObject d) {
         objectList.add(d);
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public List<AttributeList> getAttributeList() {
@@ -42,6 +47,14 @@ public class RenderableObject {
 
     public String objectTitle() {
         return objectTitle;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String content() {
+        return content;
     }
 
 }

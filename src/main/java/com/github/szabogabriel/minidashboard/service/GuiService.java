@@ -155,10 +155,12 @@ public class GuiService {
 		if (file.isPresent()) {
 			FileEntity f = file.get();
 
+			String fileContent = fileService.getFileContentString(f);
+			ret.setObjectTitle("<h1>" + f.getFileName() + " (" + DateUtils.fromMillies(f.getCreateTimestamp()) + ")</h1>");
 			if ("application/json".equalsIgnoreCase(f.getMimeType())) {
-				String json = fileService.getFileContentString(f);
-				ret = JsonToObjecRendererUtil.toRenderableObject(json);
-				ret.setObjectTitle("<h1>" + f.getFileName() + " (" + DateUtils.fromMillies(f.getCreateTimestamp()) + ")</h1>");
+				ret = JsonToObjecRendererUtil.toRenderableObject(fileContent);
+			} else {
+				ret.setContent(fileContent);
 			}
 		}
 		
