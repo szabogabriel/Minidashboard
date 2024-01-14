@@ -10,8 +10,12 @@ import com.github.szabogabriel.minidashboard.data.gui.renderable.RenderableObjec
 
 public class JsonToObjecRendererUtil {
 
+    public static RenderableObject toRenderableObject(String json) {
+        return toRenderableObject(new JSONObject(json));
+    }
+
     public static RenderableObject toRenderableObject(JSONObject json) {
-        return toRenderableObject(json, 0);
+        return toRenderableObject(json, 1);
     }
 
     private static RenderableObject toRenderableObject(JSONObject json, int depth) {

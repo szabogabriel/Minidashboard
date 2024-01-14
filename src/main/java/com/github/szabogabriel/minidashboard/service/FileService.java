@@ -1,6 +1,8 @@
 package com.github.szabogabriel.minidashboard.service;
 
 import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +38,28 @@ public class FileService {
 	
 	public Optional<FileEntity> getFileInputStream(Long id) {
 		return fileRepo.findById(id);
+	}
+
+	public Optional<FileEntity> findById(Long id) {
+		return fileRepo.findById(id);
+	}
+
+	public String getFileContentString(FileEntity fileEntity) {
+		String ret = "";
+
+		Blob blob = fileEntity.getBinaryContent();
+		try (InputStream in = blob.getBinaryStream()) {
+			byte[] buffer = new byte[1024];
+			int read = 0;
+
+			while ((read = in.read(buffer)) > 0) {
+				ret += new String(buffer, 0, read);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
 	}
 	
 	public void removeFile(Long id) {

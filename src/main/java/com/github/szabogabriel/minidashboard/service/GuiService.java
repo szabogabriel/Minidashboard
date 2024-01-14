@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.hibernate.engine.config.spi.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,9 @@ import com.github.szabogabriel.minidashboard.data.gui.DataEntryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataRowGui;
 import com.github.szabogabriel.minidashboard.data.gui.FileGui;
 import com.github.szabogabriel.minidashboard.data.gui.IndexDomainEntry;
+import com.github.szabogabriel.minidashboard.data.gui.renderable.RenderableObject;
 import com.github.szabogabriel.minidashboard.util.DateUtils;
+import com.github.szabogabriel.minidashboard.util.JsonToObjecRendererUtil;
 
 @Service
 public class GuiService {
@@ -145,6 +146,23 @@ public class GuiService {
 	
 	public void deleteFile(Long fileId) {
 		fileService.removeFile(fileId);
+	}
+
+	public RenderableObject getRenderableObject(Long fileId) {
+		RenderableObject ret = new RenderableObject();
+		Optional<FileEntity> file = fileService.findById(fileId);
+
+		if (file.isPresent()) {
+			FileEntity f = file.get();
+
+			if ("application/json".equalsIgnoreCase(f.getMimeType())) {
+				String json = fileService.getFileContentString(f);
+				ret = JsonToObjecRendererUtil.toRenderableObject(json);
+				ret.setObjectTitle("<h1>" + f.getFileName() + " (" + DateUtils.fromMillies(f.getCreateTimestamp()) + ")</h1>");
+			}
+		}
+		
+		return ret;
 	}
 
 	private int sortByCategory(DataCategoryGui g1, DataCategoryGui g2) {

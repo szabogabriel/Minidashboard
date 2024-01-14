@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.szabogabriel.minidashboard.data.gui.renderable.AttributeList;
 import com.github.szabogabriel.minidashboard.data.gui.renderable.RenderableObject;
 import com.github.szabogabriel.minidashboard.service.GuiService;
 
@@ -85,6 +84,30 @@ public class GuiController {
 
 		ret.addObject("show.config", Boolean.TRUE);
 		ret.addObject("config.values", guiService.getConfigs());
+
+		return ret;
+	}
+
+	@GetMapping("/guifile/{fileId}")
+	public ModelAndView viewFile(@PathVariable("fileId")String fileId) {
+		ModelAndView ret = createModelAndView();
+
+		if (fileId != null) {
+			try {
+				Long fileIdLong = Long.parseLong(fileId);
+				RenderableObject data = guiService.getRenderableObject(fileIdLong);
+				if (data != null) {
+					ret.addObject("show.file", Boolean.TRUE);
+					List<RenderableObject> tmp = new ArrayList<>();
+					tmp.add(data);
+					ret.addObject("objectList", tmp);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			ret = indexEmpty();
+		}
 
 		return ret;
 	}
