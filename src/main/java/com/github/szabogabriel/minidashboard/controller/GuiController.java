@@ -29,11 +29,13 @@ public class GuiController {
 	public ModelAndView index(@RequestParam(defaultValue = "") String domain) {
 		ModelAndView ret = createModelAndView();
 
-		ret.addObject("known.domains", guiService.getIndexDomainEntries(domain));
 		ret.addObject("data.entries", guiService.getCurrentDomainData(domain));
 
 		if (domain != null && domain.trim().length() > 0) {
 			ret.addObject("show.data", Boolean.TRUE);
+		} else {
+			ret.addObject("show.banner", Boolean.TRUE);
+			ret.addObject("banner", "banner.png");
 		}
 
 		return ret;
@@ -44,7 +46,6 @@ public class GuiController {
 			@PathVariable("entry") String entry) {
 		ModelAndView ret = createModelAndView();
 		
-		ret.addObject("known.domains", guiService.getIndexDomainEntries(domain));
 		ret.addObject("data.entries", guiService.getHistoricData(domain, category, entry));
 		
 		if (domain != null && domain.trim().length() > 0) {
@@ -59,7 +60,6 @@ public class GuiController {
 		ModelAndView ret = createModelAndView();
 		
 		ret.addObject("show.files", Boolean.TRUE);
-		ret.addObject("known.domains", guiService.getIndexDomainEntries(""));
 		ret.addObject("fileEntries", guiService.getFiles());
 		
 		return ret;
@@ -122,16 +122,15 @@ public class GuiController {
 	private ModelAndView createModelAndView() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page");
+		modelAndView.addObject("known.domains", guiService.getIndexDomainEntries(""));
 		modelAndView.addObject("page.title", guiService.getPageTitle());
 		modelAndView.addObject("menu.files", guiService.getMenuFiles());
 		modelAndView.addObject("button.submit", guiService.getButtonSubmit());
+		modelAndView.addObject("view.data.history", guiService.getViewDataHistory());
 		modelAndView.addObject("view.files.title", guiService.getViewFilesTitle());
 		modelAndView.addObject("view.files.file.name", guiService.getViewFilesFileName());
 		modelAndView.addObject("view.files.mime.type", guiService.getViewFilesMimeType());
 		modelAndView.addObject("view.files.created.at", guiService.getViewFilesCreatedAt());
-		modelAndView.addObject("view.files.view.link", guiService.getViewFilesViewLink());
-		modelAndView.addObject("view.files.download.link", guiService.getViewFilesDownloadLink());
-		modelAndView.addObject("view.files.delete.link", guiService.getViewFilesDeleteLink());
 		modelAndView.addObject("view.files.view", guiService.getViewFilesView());
 		modelAndView.addObject("view.files.download", guiService.getViewFilesDownload());
 		modelAndView.addObject("view.files.delete", guiService.getViewFilesDelete());

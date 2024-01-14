@@ -1,7 +1,5 @@
 package com.github.szabogabriel.minidashboard.service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.szabogabriel.minidashboard.data.entites.ConfigurationEntity;
@@ -42,11 +39,6 @@ public class GuiService {
 	
 	@Autowired
 	private FileService fileService;
-
-	@Value("${gui.date.format}")
-	private String dateFormat;
-
-	private DateTimeFormatter dtf = null;
 
 	public List<IndexDomainEntry> getIndexDomainEntries(String selectedDomain) {
 		return domainService.getDomainNames().stream().map(e -> map(e, selectedDomain)).collect(Collectors.toList());
@@ -96,12 +88,20 @@ public class GuiService {
 		return configService.getValue(ConfigurationEnum.APPLICATION_NAME);
 	}
 
+	public String getBanner() {
+		return configService.getValue(ConfigurationEnum.BANNER);
+	}
+
 	public String getMenuFiles() {
 		return configService.getValue(ConfigurationEnum.MENU_FILES);
 	}
 
 	public String getButtonSubmit() {
 		return configService.getValue(ConfigurationEnum.BUTTON_SUBMIT);
+	}
+
+	public String getViewDataHistory() {
+		return configService.getValue(ConfigurationEnum.VIEW_DATA_HISTORY);
 	}
 
 	public String getViewFilesTitle() {
@@ -118,18 +118,6 @@ public class GuiService {
 
 	public String getViewFilesCreatedAt() {
 		return configService.getValue(ConfigurationEnum.VIEW_FILES_CREATED_AT);
-	}
-
-	public String getViewFilesViewLink() {
-		return configService.getValue(ConfigurationEnum.VIEW_FILES_VIEW_LINK);
-	}
-
-	public String getViewFilesDownloadLink() {
-		return configService.getValue(ConfigurationEnum.VIEW_FILES_DOWNLOAD_LINK);
-	}
-
-	public String getViewFilesDeleteLink() {
-		return configService.getValue(ConfigurationEnum.VIEW_FILES_DELETE_LINK);
 	}
 
 	public String getViewFilesView() {
@@ -156,12 +144,12 @@ public class GuiService {
 			FileEntity f = file.get();
 
 			String fileContent = fileService.getFileContentString(f);
-			ret.setObjectTitle("<h1>" + f.getFileName() + " (" + DateUtils.fromMillies(f.getCreateTimestamp()) + ")</h1>");
 			if ("application/json".equalsIgnoreCase(f.getMimeType())) {
 				ret = JsonToObjecRendererUtil.toRenderableObject(fileContent);
 			} else {
 				ret.setContent(fileContent);
 			}
+			ret.setObjectTitle("<h1>" + f.getFileName() + " (" + DateUtils.fromMillies(f.getCreateTimestamp(), configService.getValue(ConfigurationEnum.FORMAT_DATE_GUI)) + ")</h1>");
 		}
 		
 		return ret;
@@ -213,10 +201,10 @@ public class GuiService {
 		DataEntryGui ret = new DataEntryGui();
 
 		ret.setEntry(dataEntryEntity.getEntry());
-		ret.setCreated(format(DateUtils.fromMillies(dataEntryEntity.getCreateTimestamp())));
-		ret.setLastChanged(format(DateUtils.fromMillies(dataEntryEntity.getLastModified())));
+		ret.setCreated(DateUtils.fromMillies(dataEntryEntity.getCreateTimestamp(), configService.getValue(ConfigurationEnum.FORMAT_DATE_GUI)));
+		ret.setLastChanged(DateUtils.fromMillies(dataEntryEntity.getLastModified(), configService.getValue(ConfigurationEnum.FORMAT_DATE_GUI)));
 		if (dataEntryEntity.getValidUntil() != null) {
-			ret.setValidTo(format(DateUtils.fromMillies(dataEntryEntity.getValidUntil())));
+			ret.setValidTo(DateUtils.fromMillies(dataEntryEntity.getValidUntil(), configService.getValue(ConfigurationEnum.FORMAT_DATE_GUI)));
 		} else {
 			ret.setValidTo("");
 		}
@@ -231,7 +219,7 @@ public class GuiService {
 	private FileGui map(FileEntity file) {
 		FileGui ret = new FileGui();
 		
-		ret.setCreateTime(DateUtils.fromMillies(file.getCreateTimestamp()));
+		ret.setCreateTime(DateUtils.fromMillies(file.getCreateTimestamp(), configService.getValue(ConfigurationEnum.FORMAT_DATE_GUI)));
 		ret.setFileName(file.getFileName());
 		ret.setId(file.getFile_id());
 		ret.setMimeType(file.getMimeType());
@@ -246,13 +234,6 @@ public class GuiService {
 		ret.setValue(entity.getConfValue());
 		
 		return ret;
-	}
-
-	private String format(LocalDateTime date) {
-		if (dtf == null) {
-			dtf = DateTimeFormatter.ofPattern(dateFormat);
-		}
-		return date.format(dtf);
 	}
 
 	private DataRowGui mapToRowGui(DataEntryEntity entity) {

@@ -53,7 +53,7 @@ public class JsonToObjectRendererUtilTest {
         assertEquals(1, result.getObjectList().size());
         assertEquals("key2", result.getObjectList().get(0).getAttributeList().get(0).getKey());
         assertEquals("value2", result.getObjectList().get(0).getAttributeList().get(0).getValue());
-        assertEquals("<h1>key1</h1>", result.getObjectList().get(0).getObjectTitle());
+        assertEquals("<h2>key1</h2>", result.getObjectList().get(0).getObjectTitle());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class JsonToObjectRendererUtilTest {
         assertNotNull(result);
         assertEquals(0, result.getAttributeList().size());
         assertEquals(1, result.getObjectList().size());
-        assertEquals("<h1>key</h1>", result.getObjectList().get(0).getObjectTitle());
+        assertEquals("<h2>key</h2>", result.getObjectList().get(0).getObjectTitle());
     }
     
 }
