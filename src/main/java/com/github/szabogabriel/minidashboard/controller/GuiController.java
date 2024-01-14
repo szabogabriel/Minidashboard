@@ -1,5 +1,8 @@
 package com.github.szabogabriel.minidashboard.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.szabogabriel.minidashboard.data.gui.renderable.AttributeList;
+import com.github.szabogabriel.minidashboard.data.gui.renderable.RenderableObject;
 import com.github.szabogabriel.minidashboard.service.GuiService;
 
 @Controller
@@ -25,8 +30,6 @@ public class GuiController {
 	public ModelAndView index(@RequestParam(defaultValue = "") String domain) {
 		ModelAndView ret = createModelAndView();
 
-		ret.setViewName("page");
-
 		ret.addObject("known.domains", guiService.getIndexDomainEntries(domain));
 		ret.addObject("data.entries", guiService.getCurrentDomainData(domain));
 
@@ -42,8 +45,6 @@ public class GuiController {
 			@PathVariable("entry") String entry) {
 		ModelAndView ret = createModelAndView();
 		
-		ret.setViewName("page");
-		
 		ret.addObject("known.domains", guiService.getIndexDomainEntries(domain));
 		ret.addObject("data.entries", guiService.getHistoricData(domain, category, entry));
 		
@@ -58,7 +59,6 @@ public class GuiController {
 	public ModelAndView files() {
 		ModelAndView ret = createModelAndView();
 		
-		ret.setViewName("page");
 		ret.addObject("show.files", Boolean.TRUE);
 		ret.addObject("known.domains", guiService.getIndexDomainEntries(""));
 		ret.addObject("fileEntries", guiService.getFiles());
@@ -83,7 +83,6 @@ public class GuiController {
 	public ModelAndView getConfig() {
 		ModelAndView ret = createModelAndView();
 
-		ret.setViewName("page");
 		ret.addObject("show.config", Boolean.TRUE);
 		ret.addObject("config.values", guiService.getConfigs());
 
@@ -99,6 +98,7 @@ public class GuiController {
 
 	private ModelAndView createModelAndView() {
 		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("page");
 		modelAndView.addObject("page.title", guiService.getPageTitle());
 		modelAndView.addObject("menu.files", guiService.getMenuFiles());
 		modelAndView.addObject("button.submit", guiService.getButtonSubmit());
