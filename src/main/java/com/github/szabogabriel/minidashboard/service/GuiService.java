@@ -147,7 +147,7 @@ public class GuiService {
 			if ("application/json".equalsIgnoreCase(f.getMimeType())) {
 				ret = JsonToObjecRendererUtil.toRenderableObject(fileContent);
 			} else {
-				ret.setContent(fileContent);
+				ret.setContent(fileContent.replaceAll("\n", "<br/>"));
 			}
 			ret.setObjectTitle("<h1>" + f.getFileName() + " (" + DateUtils.fromMillies(f.getCreateTimestamp(), configService.getValue(ConfigurationEnum.FORMAT_DATE_GUI)) + ")</h1>");
 		}
