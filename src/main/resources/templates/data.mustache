@@ -1,6 +1,19 @@
 {{#data.entries}}
 <h1>{{category}}</h1>
 <table class="table table-hover">
+  <thead>
+    <tr>
+      <th></th>
+      <th>{{entryDescription}}</th>
+      {{#isLevel0}}<th>{{tableHeader0}}</th>{{/isLevel0}}
+      {{#isLevel1}}<th>{{tableHeader1}}</th>{{/isLevel1}}
+      {{#isLevel2}}<th>{{tableHeader2}}</th>{{/isLevel2}}
+      {{#isLevel3}}<th>{{tableHeader3}}</th>{{/isLevel3}}
+      {{#isLevel4}}<th>{{tableHeader4}}</th>{{/isLevel4}}
+      {{#isLevel5}}<th>{{tableHeader5}}</th>{{/isLevel5}}
+      {{#isLevel6}}<th>{{tableHeader6}}</th>{{/isLevel6}}
+      {{#isLevel7}}<th>{{tableHeader7}}</th>{{/isLevel7}}
+  </thead>
   <tbody>
   {{#dataEntries}}{{#dataRows}}
     <tr>

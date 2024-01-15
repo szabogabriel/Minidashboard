@@ -183,16 +183,41 @@ public class GuiService {
 	private List<DataCategoryGui> map(List<DataEntryEntity> entities) {
 		Map<String, DataCategoryGui> tmp = new HashMap<>();
 
+		int maxLevel = 0;
 		for (DataEntryEntity it : entities) {
 			DataCategoryGui dcg;
+			String category = it.getCategory();
+			
 			if (!tmp.containsKey(it.getCategory())) {
+				String domain = it.getDomain().getName();
+
 				dcg = new DataCategoryGui();
-				dcg.setCategory(it.getCategory());
+				dcg.setCategory(category);
+
+				dcg.setEntryDescription(configService.getEntryDescription(domain, category));
+				String[] tableHeaders = configService.getTableHeaderValue(domain, category);
+				
+				dcg.setTableHeader0(tableHeaders[0]);
+				dcg.setTableHeader1(tableHeaders[1]);
+				dcg.setTableHeader2(tableHeaders[2]);
+				dcg.setTableHeader3(tableHeaders[3]);
+				dcg.setTableHeader4(tableHeaders[4]);
+				dcg.setTableHeader5(tableHeaders[5]);
+				dcg.setTableHeader6(tableHeaders[6]);
+				dcg.setTableHeader7(tableHeaders[7]);	
 			} else {
-				dcg = tmp.get(it.getCategory());
+				dcg = tmp.get(category);
 			}
 
-			dcg.addDataEntry(mapToEntryGui(it));
+			DataEntryGui deg = mapToEntryGui(it);
+			if (maxLevel < deg.getMaxIsLevel()) {
+				maxLevel = deg.getMaxIsLevel();
+				dcg.setMaxIsLevel(maxLevel);
+			} else {
+				deg.revalidateDataToMaxLevel(maxLevel);
+			}
+			dcg.addDataEntry(deg);
+
 			tmp.put(it.getCategory(), dcg);
 		}
 

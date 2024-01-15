@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.github.szabogabriel.minidashboard.data.gui.DataCategoryGui;
 import com.github.szabogabriel.minidashboard.data.gui.renderable.RenderableObject;
 import com.github.szabogabriel.minidashboard.service.GuiService;
 

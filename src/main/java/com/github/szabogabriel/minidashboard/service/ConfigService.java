@@ -92,6 +92,22 @@ public class ConfigService {
         }
     }
 
+    public String getEntryDescription(String domain, String category) {
+        String key = "/" + domain + "/" + category + "/entry";
+        return getValue(key);
+    }
+
+    public String[] getTableHeaderValue(String domain, String category) {
+        String[] ret = new String[]{"","","","","","","",""};
+
+        for (int i = 0; i < ret.length; i++) {
+            String key = "/" + domain + "/" + category + "/layer" + i;
+            ret[i] = getValue(key);
+        }
+
+        return ret;
+    }
+
     private boolean isDefaultConfigKey(String key) {
         for (ConfigurationEnum it : ConfigurationEnum.values()) {
             if (it.getKey().equals(key)) {
