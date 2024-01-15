@@ -79,6 +79,17 @@ HTTP DELETE: `/api/file/[id]`
 
 E.g. `curl -X DELETE http://localhost:8080/api/file/1652`
 
+## Configuration
+
+The configuration is available via the `/config` URL. There is no direct link to it, it must be entered manually. The default configuration values are pre-filled and cannot be removed. Custom configuration values can be added via the text fields on the bottom. There is currently no check regarding the configuration values. You can update any configuration value at any time. If you update a custom configuration with an empty text, the given configuration will be deleted.
+
+The custom configuration values can be used to assign titles to the table headers. For example, let's have a domain of `Books` and a category of `Sci-Fi`. Every entry is going to have an `Author` field as `layer0` data, `Page count` field as `layer1` data and `Rating` as `layer2` data. The `Title` should be presented at the `Entry` column. The following configuration key-value pairs should be entered to achieve this:
+
+`/Books/Sci-Fi/entry = Title`
+`/Books/Sci-Fi/layer0 = Author`
+`/Books/Sci-Fi/layer1 = Page count`
+`/Books/Sci-Fi/layer2 = Rating`
+
 ## Container
 
 1. Build the application.
