@@ -5,6 +5,7 @@ public enum ConfigurationEnum {
     APPLICATION_NAME("app.name", "Dashboard"),
     BANNER("banner", "banner.png"),
     MENU_FILES("menu.files", "Files"),
+    BUTTON_ADD("button.add", "Add"),
     BUTTON_SUBMIT("button.submit", "Submit"),
     FORMAT_DATE_GUI("format.date.gui", "yyyy-MM-dd HH:mm:ss"),
     VIEW_DATA_HISTORY("view.data.history", "History"),

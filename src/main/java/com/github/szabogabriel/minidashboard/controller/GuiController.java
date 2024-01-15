@@ -125,6 +125,7 @@ public class GuiController {
 		modelAndView.addObject("known.domains", guiService.getIndexDomainEntries(""));
 		modelAndView.addObject("page.title", guiService.getPageTitle());
 		modelAndView.addObject("menu.files", guiService.getMenuFiles());
+		modelAndView.addObject("button.add", guiService.getButtonAdd());
 		modelAndView.addObject("button.submit", guiService.getButtonSubmit());
 		modelAndView.addObject("view.data.history", guiService.getViewDataHistory());
 		modelAndView.addObject("view.files.title", guiService.getViewFilesTitle());

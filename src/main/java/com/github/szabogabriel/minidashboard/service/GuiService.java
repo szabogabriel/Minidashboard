@@ -96,6 +96,10 @@ public class GuiService {
 		return configService.getValue(ConfigurationEnum.MENU_FILES);
 	}
 
+	public String getButtonAdd() {
+		return configService.getValue(ConfigurationEnum.BUTTON_ADD);
+	}
+
 	public String getButtonSubmit() {
 		return configService.getValue(ConfigurationEnum.BUTTON_SUBMIT);
 	}

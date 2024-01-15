@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,12 +72,33 @@ public class ConfigService {
         if (cache.containsKey(key)) {
             cache.remove(key);
         }
-        Optional<ConfigurationEntity> entity = configRepo.findByConfKey(key);
-        if (entity.isPresent()) {
-            ConfigurationEntity confEntity = entity.get();
-            confEntity.setConfValue(value);
-            configRepo.save(confEntity);
+        if (Strings.isNotEmpty(value)) {
+            Optional<ConfigurationEntity> entity = configRepo.findByConfKey(key);
+            if (entity.isPresent()) {
+                ConfigurationEntity confEntity = entity.get();
+                confEntity.setConfValue(value);
+                configRepo.save(confEntity);
+            } else {
+                ConfigurationEntity confEntity = new ConfigurationEntity();
+                confEntity.setConfKey(key);
+                confEntity.setConfValue(value);
+                configRepo.save(confEntity);
+            }
+        } else {
+            Optional<ConfigurationEntity> entity = configRepo.findByConfKey(key);
+            if (entity.isPresent() && !isDefaultConfigKey(key)) {
+                configRepo.delete(entity.get());
+            }
         }
+    }
+
+    private boolean isDefaultConfigKey(String key) {
+        for (ConfigurationEnum it : ConfigurationEnum.values()) {
+            if (it.getKey().equals(key)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void createConfig(String key, String value) {

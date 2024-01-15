@@ -12,10 +12,17 @@
     <tr>
     <form action="/config" method="POST">
       <td><input type="hidden" id="key" name="key" value="{{key}}"/>{{key}}</td>
-      <td><input type="input" id="value" name="value" value="{{value}}"></td></td>
+      <td><input type="input" id="value" name="value" value="{{value}}"></input></td>
       <td><input type="submit" value="{{button.submit}}"/></td>
     </form>
     </tr>
   {{/config.values}}
+    <tr>
+      <form action="/config" method="POST">
+        <td><input type="input" id="key" name="key"/></td>
+        <td><input type="input" id="value" name="value"/></td>
+        <td><input type="submit" value="{{button.add}}"/></td>
+      </form>
+    </tr>
   </tbody>
 </table>
