@@ -104,6 +104,18 @@ public class GuiService {
 		return configService.getValue(ConfigurationEnum.BUTTON_SUBMIT);
 	}
 
+	public String getStringCreated() {
+		return configService.getValue(ConfigurationEnum.STRING_CREATED);
+	}
+
+	public String getStringLastChanged() {
+		return configService.getValue(ConfigurationEnum.STRING_LAST_CHANGED);
+	}
+
+	public String getStringValidUntil() {
+		return configService.getValue(ConfigurationEnum.STRING_VALID_UNTIL);
+	}
+
 	public String getViewDataHistory() {
 		return configService.getValue(ConfigurationEnum.VIEW_DATA_HISTORY);
 	}

@@ -3,33 +3,33 @@
 <table class="table table-hover">
   <tbody>
     <tr>
-    <th>Created</th>
-    <th>Last Changed</th>
-    <th>Valid Until</th>
-    <th>Entry</th>
+    <th>{{string.created}}</th>
+    <th>{{string.lastChanged}}</th>
+    <th>{{string.validUntil}}</th>
+    <th>{{entryDescription}}</th>
     {{#isLevel0}}
-      <th>Level 0</td>
+      <th>{{tableHeader0}}</td>
     {{/isLevel0}}
     {{#isLevel1}}
-      <th>Level 1</th>
+      <th>{{tableHeader1}}</th>
     {{/isLevel1}}
     {{#isLevel2}}
-      <th>Level 2</th>
+      <th>{{tableHeader2}}</th>
     {{/isLevel2}}
     {{#isLevel3}}
-      <th>Level 3</th>
+      <th>{{tableHeader3}}</th>
     {{/isLevel3}}
     {{#isLevel4}}
-      <th>Level 4</th>
+      <th>{{tableHeader4}}</th>
     {{/isLevel4}}
     {{#isLevel5}}
-      <th>Level 5</th>
+      <th>{{tableHeader5}}</th>
     {{/isLevel5}}
     {{#isLevel6}}
-      <th>Level 6</th>
+      <th>{{tableHeader6}}</th>
     {{/isLevel6}}
     {{#isLevel7}}
-      <th>Level 7</th>
+      <th>{{tableHeader7}}</th>
     {{/isLevel7}}
     <tr>
   {{#dataEntries}}{{#dataRows}}

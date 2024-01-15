@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.szabogabriel.minidashboard.data.gui.DataCategoryGui;
 import com.github.szabogabriel.minidashboard.data.gui.renderable.RenderableObject;
 import com.github.szabogabriel.minidashboard.service.GuiService;
 
@@ -128,6 +127,9 @@ public class GuiController {
 		modelAndView.addObject("menu.files", guiService.getMenuFiles());
 		modelAndView.addObject("button.add", guiService.getButtonAdd());
 		modelAndView.addObject("button.submit", guiService.getButtonSubmit());
+		modelAndView.addObject("string.created", guiService.getStringCreated());
+		modelAndView.addObject("string.lastChanged", guiService.getStringLastChanged());
+		modelAndView.addObject("string.validUntil", guiService.getStringValidUntil());
 		modelAndView.addObject("view.data.history", guiService.getViewDataHistory());
 		modelAndView.addObject("view.files.title", guiService.getViewFilesTitle());
 		modelAndView.addObject("view.files.file.name", guiService.getViewFilesFileName());
