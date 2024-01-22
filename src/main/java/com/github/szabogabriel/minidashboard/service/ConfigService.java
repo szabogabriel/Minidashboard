@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.szabogabriel.minidashboard.data.entites.ConfigurationEntity;
 import com.github.szabogabriel.minidashboard.data.enums.ConfigurationEnum;
+import com.github.szabogabriel.minidashboard.data.enums.ConfigurationTypeEnum;
 import com.github.szabogabriel.minidashboard.repository.ConfigRepository;
 
 import jakarta.annotation.PostConstruct;
@@ -92,8 +93,8 @@ public class ConfigService {
         }
     }
 
-    public String getEntryDescription(String domain, String category) {
-        String key = "/" + domain + "/" + category + "/entry";
+    public String getEntryDescription(ConfigurationTypeEnum type, String domain, String category) {
+        String key = type.getCategory() + "/" + domain + "/" + category + "/entry";
         return getValue(key);
     }
 
@@ -101,7 +102,7 @@ public class ConfigService {
         String[] ret = new String[]{"","","","","","","",""};
 
         for (int i = 0; i < ret.length; i++) {
-            String key = "/" + domain + "/" + category + "/layer" + i;
+            String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/layer" + i;
             ret[i] = getValue(key);
         }
 

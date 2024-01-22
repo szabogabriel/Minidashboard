@@ -15,6 +15,7 @@ import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
 import com.github.szabogabriel.minidashboard.data.entites.FileEntity;
 import com.github.szabogabriel.minidashboard.data.enums.ConfigurationEnum;
+import com.github.szabogabriel.minidashboard.data.enums.ConfigurationTypeEnum;
 import com.github.szabogabriel.minidashboard.data.gui.ConfigurationGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataCategoryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataEntryGui;
@@ -206,7 +207,7 @@ public class GuiService {
 				dcg = new DataCategoryGui();
 				dcg.setCategory(category);
 
-				dcg.setEntryDescription(configService.getEntryDescription(domain, category));
+				dcg.setEntryDescription(configService.getEntryDescription(ConfigurationTypeEnum.TABLE_HEADER, domain, category));
 				String[] tableHeaders = configService.getTableHeaderValue(domain, category);
 				
 				dcg.setTableHeader0(tableHeaders[0]);
