@@ -102,7 +102,7 @@ public class ConfigService {
         String[] ret = new String[]{"","","","","","","",""};
 
         for (int i = 0; i < ret.length; i++) {
-            String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/layer" + i;
+            String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/level" + i;
             ret[i] = getValue(key);
         }
 
