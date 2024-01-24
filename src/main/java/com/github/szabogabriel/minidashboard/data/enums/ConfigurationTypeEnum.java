@@ -4,6 +4,7 @@ public enum ConfigurationTypeEnum {
 
     DEFAULT(""),
     TABLE_HEADER("header:"),
+    COLUMN_HANDLER("callback:"),
     ;
 
     private String configCategory;
