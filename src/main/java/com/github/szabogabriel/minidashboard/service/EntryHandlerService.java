@@ -5,10 +5,13 @@ import org.springframework.stereotype.Service;
 
 import com.github.szabogabriel.minidashboard.data.dto.DataEntryDto;
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
-import com.github.szabogabriel.minidashboard.external.EntryHandler;
+import com.github.szabogabriel.minidashboard.handler.DefaultEntryHandler;
+import com.github.szabogabriel.minidashboard.handler.EntryHandler;
 
 @Service
 public class EntryHandlerService {
+
+    private final EntryHandler DEFAULT = new DefaultEntryHandler();
 
     @Autowired
     private ConfigService configService;
@@ -21,8 +24,7 @@ public class EntryHandlerService {
     }
 
     public EntryHandler getEntryHandler(String domain, String category, String entry) {
-        // TODO: create a default and load from config the configured ones.
-        return (entity) -> null;
+        return DEFAULT;
     }
 
 }
