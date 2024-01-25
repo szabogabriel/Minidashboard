@@ -1,6 +1,7 @@
 package com.github.szabogabriel.minidashboard.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class ConfigService {
     public void init() {
         Set<String> dbConfigs = getAllEntries().stream().map(e -> e.getConfKey()).collect(Collectors.toSet());
         List<ConfigurationEntity> newEntities = new ArrayList<>();
-        
+
         for (ConfigurationEnum it : ConfigurationEnum.values()) {
             if (!dbConfigs.contains(it.getKey())) {
                 ConfigurationEntity newEntity = new ConfigurationEntity();
@@ -46,10 +47,17 @@ public class ConfigService {
                 configRepo.save(it);
             }
         }
-    }    
+    }
 
-    public String getValue(String key) {
-        if (!cache.containsKey(key)) {
+    public List<String> getValue(String key) {
+        List<String> ret = new ArrayList<>();
+        if (key.contains("*")) {
+            String selectKey = key.replaceAll("*", "%");
+
+            List<ConfigurationEntity> data = configRepo.findAllEntitiesViaWildcard(selectKey);
+
+            ret = data.stream().map(e -> e.getConfValue()).collect(Collectors.toList());
+        } else if (!cache.containsKey(key)) {
             Optional<ConfigurationEntity> configEntity = configRepo.findByConfKey(key);
             String data = "";
 
@@ -58,15 +66,17 @@ public class ConfigService {
             }
 
             cache.put(key, data);
-        }
 
-        String ret = cache.get(key);
+            ret = Arrays.asList(cache.get(key));
+        } else {
+            ret = Arrays.asList(cache.get(key));
+        }
 
         return ret;
     }
 
     public String getValue(ConfigurationEnum config) {
-        return getValue(config.getKey());
+        return getValue(config.getKey()).get(0);
     }
 
     public void setValue(String key, String value) {
@@ -93,17 +103,18 @@ public class ConfigService {
         }
     }
 
-    public String getEntryDescription(ConfigurationTypeEnum type, String domain, String category) {
+    public List<String> getEntryDescription(ConfigurationTypeEnum type, String domain, String category) {
         String key = type.getCategory() + "/" + domain + "/" + category + "/entry";
         return getValue(key);
     }
 
     public String[] getTableHeaderValue(String domain, String category) {
-        String[] ret = new String[]{"","","","","","","",""};
+        String[] ret = new String[] { "", "", "", "", "", "", "", "" };
 
         for (int i = 0; i < ret.length; i++) {
-            String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/level" + i;
-            ret[i] = getValue(key);
+            String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/level"
+                    + i;
+            ret[i] = getValue(key).get(0);
         }
 
         return ret;
@@ -123,15 +134,16 @@ public class ConfigService {
             cache.remove(key);
         }
         ConfigurationEntity tmp = configRepo.findByConfKey(key).orElse(new ConfigurationEntity());
-        
+
         tmp.setConfKey(key);
         tmp.setConfValue(value);
-        
+
         configRepo.save(tmp);
     }
 
     public List<ConfigurationEntity> getAllEntries() {
-        return configRepo.findAll().stream().sorted((e1, e2) -> e1.getConfKey().compareTo(e2.getConfKey())).collect(Collectors.toList());
+        return configRepo.findAll().stream().sorted((e1, e2) -> e1.getConfKey().compareTo(e2.getConfKey()))
+                .collect(Collectors.toList());
     }
 
 }
