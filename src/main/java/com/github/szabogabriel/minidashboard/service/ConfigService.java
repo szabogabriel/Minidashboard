@@ -1,7 +1,6 @@
 package com.github.szabogabriel.minidashboard.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.szabogabriel.minidashboard.config.ConfigKey;
 import com.github.szabogabriel.minidashboard.data.entites.ConfigurationEntity;
 import com.github.szabogabriel.minidashboard.data.enums.ConfigurationEnum;
 import com.github.szabogabriel.minidashboard.data.enums.ConfigurationTypeEnum;
@@ -26,7 +26,7 @@ public class ConfigService {
     @Autowired
     private ConfigRepository configRepo;
 
-    private Map<String, String> cache = new HashMap<>();
+    private Map<ConfigKey, String> cache = new HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -49,42 +49,36 @@ public class ConfigService {
         }
     }
 
-    public List<String> getValue(String key) {
-        List<String> ret = new ArrayList<>();
-        if (key.contains("*")) {
-            String selectKey = key.replaceAll("*", "%");
-
-            List<ConfigurationEntity> data = configRepo.findAllEntitiesViaWildcard(selectKey);
-
-            ret = data.stream().map(e -> e.getConfValue()).collect(Collectors.toList());
-        } else if (!cache.containsKey(key)) {
-            Optional<ConfigurationEntity> configEntity = configRepo.findByConfKey(key);
+    public String getValue(String key) {
+        String ret = "";
+        ConfigKey confKey = new ConfigKey(key);
+        if (!cache.containsKey(confKey)) {
+            Optional<ConfigurationEntity> configEntity = configRepo.findByConfKey(confKey.toSqlQueryString());
             String data = "";
 
             if (configEntity.isPresent()) {
                 data = configEntity.get().getConfValue();
             }
 
-            cache.put(key, data);
-
-            ret = Arrays.asList(cache.get(key));
-        } else {
-            ret = Arrays.asList(cache.get(key));
+            cache.put(confKey, data);
         }
+
+        ret = cache.get(confKey);
 
         return ret;
     }
 
     public String getValue(ConfigurationEnum config) {
-        return getValue(config.getKey()).get(0);
+        return getValue(config.getKey());
     }
 
     public void setValue(String key, String value) {
-        if (cache.containsKey(key)) {
-            cache.remove(key);
+        ConfigKey confKey = new ConfigKey(key);
+        if (cache.containsKey(confKey)) {
+            cache.remove(confKey);
         }
         if (Strings.isNotEmpty(value)) {
-            Optional<ConfigurationEntity> entity = configRepo.findByConfKey(key);
+            Optional<ConfigurationEntity> entity = configRepo.findByConfKey(confKey.toSqlQueryString());
             if (entity.isPresent()) {
                 ConfigurationEntity confEntity = entity.get();
                 confEntity.setConfValue(value);
@@ -103,7 +97,7 @@ public class ConfigService {
         }
     }
 
-    public List<String> getEntryDescription(ConfigurationTypeEnum type, String domain, String category) {
+    public String getEntryDescription(ConfigurationTypeEnum type, String domain, String category) {
         String key = type.getCategory() + "/" + domain + "/" + category + "/entry";
         return getValue(key);
     }
@@ -114,7 +108,7 @@ public class ConfigService {
         for (int i = 0; i < ret.length; i++) {
             String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/level"
                     + i;
-            ret[i] = getValue(key).get(0);
+            ret[i] = getValue(key);
         }
 
         return ret;
@@ -127,18 +121,6 @@ public class ConfigService {
             }
         }
         return false;
-    }
-
-    public void createConfig(String key, String value) {
-        if (cache.containsKey(key)) {
-            cache.remove(key);
-        }
-        ConfigurationEntity tmp = configRepo.findByConfKey(key).orElse(new ConfigurationEntity());
-
-        tmp.setConfKey(key);
-        tmp.setConfValue(value);
-
-        configRepo.save(tmp);
     }
 
     public List<ConfigurationEntity> getAllEntries() {
