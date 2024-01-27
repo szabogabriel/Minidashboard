@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.github.szabogabriel.minidashboard.data.api.DataRequest;
 import com.github.szabogabriel.minidashboard.data.api.DataResponse;
 import com.github.szabogabriel.minidashboard.data.api.FileResponse;
+import com.github.szabogabriel.minidashboard.data.dto.DataEntryDto;
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
 import com.github.szabogabriel.minidashboard.data.entites.FileEntity;
@@ -139,9 +140,9 @@ public class ApiService {
 		return ret;
 	}
 
-	private DataResponse map(DataEntryEntity dee) {
+	private DataResponse map(DataEntryDto dee) {
 		DataResponse ret = new DataResponse();
-		ret.setDomain(dee.getDomain().getName());
+		ret.setDomain(dee.getDomain());
 		ret.setCategory(dee.getCategory());
 		ret.setEntry(dee.getEntry());
 		ret.setLevel0(dee.getLevel0());

@@ -1,11 +1,13 @@
 package com.github.szabogabriel.minidashboard.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.szabogabriel.minidashboard.data.dto.DataEntryDto;
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
 import com.github.szabogabriel.minidashboard.repository.DataEntryRepository;
@@ -15,6 +17,9 @@ public class DataEntryService {
 
 	@Autowired
 	private DataEntryRepository dataEntryRepo;
+
+	@Autowired
+	private EntryHandlerService entryHandlerService;
 
 	public void createEntry(DataEntryEntity entity) {
 		List<DataEntryEntity> tmp = dataEntryRepo.findAllByDomainAndCategoryAndEntry(entity.getDomain(), entity.getCategory(), entity.getEntry());
@@ -41,24 +46,32 @@ public class DataEntryService {
 		}
 	}
 	
-	public List<DataEntryEntity> getEntries() {
-		return dataEntryRepo.findAll();
+	public List<DataEntryDto> getEntries() {
+		return handleViaEntryHandler(dataEntryRepo.findAll());
 	}
 	
-	public List<DataEntryEntity> getEntries(DomainEntity domain) {
-		return dataEntryRepo.findAllByDomain(domain);
+	public List<DataEntryDto> getEntries(DomainEntity domain) {
+		return handleViaEntryHandler(dataEntryRepo.findAllByDomain(domain));
 	}
 	
-	public List<DataEntryEntity> getCurrentEntries(DomainEntity domain) {
-		return dataEntryRepo.findAllByDomainAndValidUntil(domain, null);
+	public List<DataEntryDto> getCurrentEntries(DomainEntity domain) {
+		return handleViaEntryHandler(dataEntryRepo.findAllByDomainAndValidUntil(domain, null));
 	}
 	
-	public List<DataEntryEntity> getEntries(DomainEntity domain, String category) {
-		return dataEntryRepo.findAllByDomainAndCategory(domain, category);
+	public List<DataEntryDto> getEntries(DomainEntity domain, String category) {
+		return handleViaEntryHandler(dataEntryRepo.findAllByDomainAndCategory(domain, category));
 	}
 	
-	public List<DataEntryEntity> getEntries(DomainEntity domain, String category, String entry) {
-		return dataEntryRepo.findAllByDomainAndCategoryAndEntry(domain, category, entry);
+	public List<DataEntryDto> getEntries(DomainEntity domain, String category, String entry) {
+		return handleViaEntryHandler(dataEntryRepo.findAllByDomainAndCategoryAndEntry(domain, category, entry));
+	}
+
+	private List<DataEntryDto> handleViaEntryHandler(List<DataEntryEntity> entities) {
+		List<DataEntryDto> ret = new ArrayList<>(entities.size());
+		for (DataEntryEntity it : entities) {
+			ret.add(entryHandlerService.handleDataEntry(it));
+		}
+		return ret;
 	}
 	
 	public void deleteEntry(DomainEntity domain, String category, String entry, boolean soft) {
