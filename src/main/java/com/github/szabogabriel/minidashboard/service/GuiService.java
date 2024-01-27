@@ -15,7 +15,6 @@ import com.github.szabogabriel.minidashboard.data.entites.ConfigurationEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
 import com.github.szabogabriel.minidashboard.data.entites.FileEntity;
 import com.github.szabogabriel.minidashboard.data.enums.ConfigurationEnum;
-import com.github.szabogabriel.minidashboard.data.enums.ConfigurationTypeEnum;
 import com.github.szabogabriel.minidashboard.data.gui.ConfigurationGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataCategoryGui;
 import com.github.szabogabriel.minidashboard.data.gui.DataEntryGui;

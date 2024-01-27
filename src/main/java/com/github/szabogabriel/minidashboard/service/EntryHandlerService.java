@@ -1,7 +1,6 @@
 package com.github.szabogabriel.minidashboard.service;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,18 +38,22 @@ public class EntryHandlerService {
     private EntryHandler getHandler(String handlerPackage) {
         EntryHandler ret = DEFAULT;
         
-        if (handlerPackage != null && !handlerPackage.isEmpty() && handlers.containsKey(handlerPackage)) {
-            try {
-                Constructor<?> cons [] = Class.forName(handlerPackage).getConstructors();
-                if (cons != null && cons.length > 0) {
-                    Object o = cons[0].newInstance();
+        if (handlerPackage != null && !handlerPackage.isEmpty()) {
+            if (handlers.containsKey(handlerPackage)) {
+                ret = handlers.get(handlerPackage);
+            } else {
+                try {
+                    Constructor<?> cons [] = Class.forName(handlerPackage).getConstructors();
+                    if (cons != null && cons.length > 0) {
+                        Object o = cons[0].newInstance();
 
-                    if (o instanceof EntryHandler) {
-                        ret = (EntryHandler)o;
+                        if (o instanceof EntryHandler) {
+                            ret = (EntryHandler)o;
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         
