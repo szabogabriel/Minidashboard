@@ -14,7 +14,11 @@ public class ConfigKey {
             pattern = Pattern.compile(createRegex(key));
         }
     }
-    
+
+    public String getConfigKey() {
+        return key;
+    }
+
     private boolean hasWildcard(String key) {
         return key.contains("*");
     }
@@ -29,14 +33,6 @@ public class ConfigKey {
             ret = pattern.matcher(key).matches();
         } else {
             ret = this.key.equals(key);
-        }
-        return ret;
-    }
-
-    public String toSqlQueryString() {
-        String ret = key;
-        if (pattern != null) {
-            ret = key.replaceAll("\\*", "%");
         }
         return ret;
     }

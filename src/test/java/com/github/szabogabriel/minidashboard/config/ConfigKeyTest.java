@@ -29,11 +29,4 @@ public class ConfigKeyTest {
         assertTrue(ck.equals(new ConfigKey("/test/beta/alfa")));
     }
 
-    @Test
-    void testToSqlQueryString() {
-        ConfigKey ck = new ConfigKey("/test/*");
-
-        assertEquals("/test/%", ck.toSqlQueryString());
-    }
-
 }

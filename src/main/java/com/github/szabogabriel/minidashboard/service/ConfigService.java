@@ -53,11 +53,17 @@ public class ConfigService {
         String ret = "";
         ConfigKey confKey = new ConfigKey(key);
         if (!cache.containsKey(confKey)) {
-            Optional<ConfigurationEntity> configEntity = configRepo.findByConfKey(confKey.toSqlQueryString());
+            Optional<ConfigurationEntity> configEntity = configRepo.findByConfKey(key);
             String data = "";
 
             if (configEntity.isPresent()) {
                 data = configEntity.get().getConfValue();
+            } else {
+                ConfigKey confKe2 = configRepo.findAllConfigKeys().stream().map(e -> new ConfigKey(e)).filter(e -> e.matches(key)).findAny().orElse(null);
+                if (confKe2 != null) {
+                    configEntity = configRepo.findByConfKey(confKe2.getConfigKey());
+                    data = configEntity.get().getConfValue();
+                }
             }
 
             cache.put(confKey, data);
@@ -74,11 +80,19 @@ public class ConfigService {
 
     public void setValue(String key, String value) {
         ConfigKey confKey = new ConfigKey(key);
-        if (cache.containsKey(confKey)) {
-            cache.remove(confKey);
+        
+        List<ConfigKey> toBeRemoved = new ArrayList<>();
+        for (ConfigKey it : cache.keySet()) {
+            if (confKey.equals(it)) {
+                toBeRemoved.add(it);
+            }
         }
+        for (ConfigKey it : toBeRemoved) {
+            cache.remove(it);
+        }
+        
         if (Strings.isNotEmpty(value)) {
-            Optional<ConfigurationEntity> entity = configRepo.findByConfKey(confKey.toSqlQueryString());
+            Optional<ConfigurationEntity> entity = configRepo.findByConfKey(key);
             if (entity.isPresent()) {
                 ConfigurationEntity confEntity = entity.get();
                 confEntity.setConfValue(value);
@@ -99,6 +113,11 @@ public class ConfigService {
 
     public String getEntryDescription(String domain, String category) {
         String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/entry";
+        return getValue(key);
+    }
+
+    public String getEntryHandler(String domain, String category, String entry) {
+        String key = ConfigurationTypeEnum.COLUMN_HANDLER.getCategory() + "/" + domain + "/" + category + "/" + entry;
         return getValue(key);
     }
 

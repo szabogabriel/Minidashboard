@@ -1,5 +1,10 @@
 package com.github.szabogabriel.minidashboard.service;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +21,8 @@ public class EntryHandlerService {
     @Autowired
     private ConfigService configService;
 
+    private Map<String, EntryHandler> handlers = new HashMap<>();
+
     public DataEntryDto handleDataEntry(DataEntryEntity toBeHandled) {
         EntryHandler handler = getEntryHandler(toBeHandled.getDomain().getName(), toBeHandled.getCategory(),
                 toBeHandled.getEntry());
@@ -24,7 +31,30 @@ public class EntryHandlerService {
     }
 
     public EntryHandler getEntryHandler(String domain, String category, String entry) {
-        return DEFAULT;
+        String handler = configService.getEntryHandler(domain, category, entry);
+        
+        return getHandler(handler);
+    }
+
+    private EntryHandler getHandler(String handlerPackage) {
+        EntryHandler ret = DEFAULT;
+        
+        if (handlerPackage != null && !handlerPackage.isEmpty() && handlers.containsKey(handlerPackage)) {
+            try {
+                Constructor<?> cons [] = Class.forName(handlerPackage).getConstructors();
+                if (cons != null && cons.length > 0) {
+                    Object o = cons[0].newInstance();
+
+                    if (o instanceof EntryHandler) {
+                        ret = (EntryHandler)o;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return ret;
     }
 
 }

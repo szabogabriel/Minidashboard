@@ -16,7 +16,10 @@ public interface ConfigRepository extends JpaRepository<ConfigurationEntity, Lon
 
     public Optional<ConfigurationEntity> findByConfKey(String key);
 
-    @Query("SELECT ce FROM ConfigurationEntity ce WHERE ce.confKey like :key")
+    @Query("SELECT ce FROM ConfigurationEntity ce WHERE ce.confKey = :key")
     public List<ConfigurationEntity> findAllEntitiesViaWildcard(String key);
+
+    @Query("SELECT ce.confKey FROM ConfigurationEntity ce")
+    public List<String> findAllConfigKeys();
     
 }
