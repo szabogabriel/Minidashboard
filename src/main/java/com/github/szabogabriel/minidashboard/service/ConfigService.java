@@ -49,7 +49,7 @@ public class ConfigService {
         }
     }
 
-    public String getValue(String key) {
+    private String getValue(String key) {
         String ret = "";
         ConfigKey confKey = new ConfigKey(key);
         if (!cache.containsKey(confKey)) {
