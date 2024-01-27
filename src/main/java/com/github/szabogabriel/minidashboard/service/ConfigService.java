@@ -97,8 +97,8 @@ public class ConfigService {
         }
     }
 
-    public String getEntryDescription(ConfigurationTypeEnum type, String domain, String category) {
-        String key = type.getCategory() + "/" + domain + "/" + category + "/entry";
+    public String getEntryDescription(String domain, String category) {
+        String key = ConfigurationTypeEnum.TABLE_HEADER.getCategory() + "/" + domain + "/" + category + "/entry";
         return getValue(key);
     }
 

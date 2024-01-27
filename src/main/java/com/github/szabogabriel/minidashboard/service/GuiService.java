@@ -207,7 +207,7 @@ public class GuiService {
 				dcg = new DataCategoryGui();
 				dcg.setCategory(category);
 
-				dcg.setEntryDescription(configService.getEntryDescription(ConfigurationTypeEnum.TABLE_HEADER, domain, category));
+				dcg.setEntryDescription(configService.getEntryDescription(domain, category));
 				String[] tableHeaders = configService.getTableHeaderValue(domain, category);
 				
 				dcg.setTableHeader0(tableHeaders[0]);
