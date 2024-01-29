@@ -37,6 +37,13 @@ public class ConfigKey {
         return ret;
     }
 
+    public boolean matches(ConfigKey key) {
+        if (key != null && key.key != null) {
+            return matches(key.key);
+        }
+        return false;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -57,7 +64,7 @@ public class ConfigKey {
         if (key == null) {
             if (other.key != null)
                 return false;
-        } else if (!key.equals(other.key) && !pattern.matcher(other.key).matches())
+        } else if (!key.equals(other.key))
             return false;
         return true;
     }

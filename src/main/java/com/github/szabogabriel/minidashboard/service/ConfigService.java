@@ -83,7 +83,7 @@ public class ConfigService {
         
         List<ConfigKey> toBeRemoved = new ArrayList<>();
         for (ConfigKey it : cache.keySet()) {
-            if (confKey.equals(it)) {
+            if (confKey.matches(it)) {
                 toBeRemoved.add(it);
             }
         }
