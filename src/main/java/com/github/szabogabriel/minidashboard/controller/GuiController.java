@@ -20,12 +20,12 @@ public class GuiController {
 	@Autowired
 	private GuiService guiService;
 	
-	@GetMapping("/")
+	@GetMapping(value="/", produces="text/html")
 	public ModelAndView indexEmpty() {
 		return index("");
 	}
 
-	@GetMapping("/index")
+	@GetMapping(value="/index", produces="text/html")
 	public ModelAndView index(@RequestParam(defaultValue = "") String domain) {
 		ModelAndView ret = createModelAndView();
 
@@ -41,7 +41,7 @@ public class GuiController {
 		return ret;
 	}
 
-	@GetMapping("/history/{domain}/{category}/{entry}")
+	@GetMapping(value="/history/{domain}/{category}/{entry}", produces="text/html")
 	public ModelAndView history(@PathVariable("domain") String domain, @PathVariable("category") String category,
 			@PathVariable("entry") String entry) {
 		ModelAndView ret = createModelAndView();
@@ -55,7 +55,7 @@ public class GuiController {
 		return ret;
 	}
 	
-	@GetMapping("/files")
+	@GetMapping(value="/files", produces="text/html")
 	public ModelAndView files() {
 		ModelAndView ret = createModelAndView();
 		
@@ -65,7 +65,7 @@ public class GuiController {
 		return ret;
 	}
 	
-	@GetMapping("/file/delete/{fileId}")
+	@GetMapping(value="/file/delete/{fileId}", produces="text/html")
 	public ModelAndView fileDelete(@PathVariable("fileId")String fileId) {
 		if (fileId != null) {
 			try {
@@ -78,7 +78,7 @@ public class GuiController {
 		return files();
 	}
 
-	@GetMapping("/config")
+	@GetMapping(value="/config", produces="text/html")
 	public ModelAndView getConfig() {
 		ModelAndView ret = createModelAndView();
 
@@ -88,7 +88,7 @@ public class GuiController {
 		return ret;
 	}
 
-	@GetMapping("/guifile/{fileId}")
+	@GetMapping(value="/guifile/{fileId}", produces="text/html")
 	public ModelAndView viewFile(@PathVariable("fileId")String fileId) {
 		ModelAndView ret = createModelAndView();
 
@@ -112,7 +112,7 @@ public class GuiController {
 		return ret;
 	}
 
-	@PostMapping("/config")
+	@PostMapping(value="/config", produces="text/html")
 	public ModelAndView updateConfig(@RequestParam("key") String key, @RequestParam("value") String value) {
 		guiService.updateConfigs(key, value);
 
