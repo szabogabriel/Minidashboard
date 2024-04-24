@@ -6,6 +6,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
 
 import com.github.szabogabriel.minidashboard.data.dto.DataEntryDto;
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
@@ -65,6 +69,16 @@ public class DataEntryService {
 	public List<DataEntryDto> getEntries(DomainEntity domain, String category, String entry) {
 		return handleViaEntryHandler(dataEntryRepo.findAllByDomainAndCategoryAndEntry(domain, category, entry));
 	}
+
+	public List<DataEntryDto> getEntriesPaged(DomainEntity domain, String category, String entry, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("createTimestamp").descending());
+		return handleViaEntryHandler(dataEntryRepo.findAllByDomainAndCategoryAndEntry(pageable, domain, category, entry));
+	}
+
+	public int getCountOfEntries(DomainEntity domain, String category, String entry) {
+		return dataEntryRepo.countByDomainAndCategoryAndEntry(domain, category, entry);
+	}
+
 
 	private List<DataEntryDto> handleViaEntryHandler(List<DataEntryEntity> entities) {
 		List<DataEntryDto> ret = new ArrayList<>(entities.size());

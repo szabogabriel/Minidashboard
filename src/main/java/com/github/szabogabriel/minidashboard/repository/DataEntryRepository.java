@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
 import com.github.szabogabriel.minidashboard.data.entites.DataEntryEntity;
 import com.github.szabogabriel.minidashboard.data.entites.DomainEntity;
@@ -27,5 +28,9 @@ public interface DataEntryRepository extends JpaRepository<DataEntryEntity, Long
 	public List<DataEntryEntity> deleteByDomainAndCategory(DomainEntity domain, String category);
 	
 	public List<DataEntryEntity> deleteByDomain(DomainEntity domain);
+
+	public List<DataEntryEntity> findAllByDomainAndCategoryAndEntry(Pageable pageable, DomainEntity domain, String category, String entry);
+
+	public int countByDomainAndCategoryAndEntry(DomainEntity domain, String category, String entry);
 
 }

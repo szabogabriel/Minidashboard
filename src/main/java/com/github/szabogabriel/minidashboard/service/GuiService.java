@@ -57,18 +57,33 @@ public class GuiService {
 		return ret.stream().sorted(this::sortByCategory).collect(Collectors.toList());
 	}
 
-	public List<DataCategoryGui> getHistoricData(String domain, String category, String entry) {
+	public List<DataCategoryGui> getHistoricData(String domain, String category, String entry, int page, int size) {
 		List<DataCategoryGui> ret = new ArrayList<>();
 
 		Optional<DomainEntity> dom = domainService.getDomain(domain);
 
 		if (dom.isPresent()) {
-			ret = map(dataEntryService.getEntries(dom.get(), category, entry).stream().sorted(this::sortByLastModified)
+			ret = map(dataEntryService.getEntriesPaged(dom.get(), category, entry, page, size).stream().sorted(this::sortByCreatedDesc)
 					.collect(Collectors.toList()));
 		}
 
 		return ret;
 	}
+
+	public int getTotalPages(String domain, String category, String entry, int size) {
+		int ret = 0;
+
+		Optional<DomainEntity> dom = domainService.getDomain(domain);
+
+		if (dom.isPresent()) {
+			int count = dataEntryService.getCountOfEntries(dom.get(), category, entry);
+
+			ret = (int) Math.ceil((double) count / size);
+		}
+
+		return ret;
+	}
+
 	
 	public List<FileGui> getFiles() {
 		return fileService.getAllEntries().stream().map(this::map).collect(Collectors.toList());
@@ -147,6 +162,11 @@ public class GuiService {
 	public String getViewFilesDelete() {
 		return configService.getValue(ConfigurationEnum.VIEW_FILES_DELETE);
 	}
+
+	public String getNumberOfHistoryItems() {
+		return configService.getValue(ConfigurationEnum.NUMBER_OF_HISTORY_ITEMS);
+	}
+
 	
 	public void deleteFile(Long fileId) {
 		fileService.removeFile(fileId);
@@ -175,8 +195,8 @@ public class GuiService {
 		return g1.getCategory().compareTo(g2.getCategory());
 	}
 
-	private int sortByLastModified(DataEntryDto e1, DataEntryDto e2) {
-		return (int) (e1.getCreateTimestamp() - e2.getCreateTimestamp());
+	private int sortByCreatedDesc(DataEntryDto e1, DataEntryDto e2) {
+		return (int) (e2.getCreateTimestamp() - e1.getCreateTimestamp());
 	}
 
 	private int sortByEntry(DataEntryDto e1, DataEntryDto e2) {
