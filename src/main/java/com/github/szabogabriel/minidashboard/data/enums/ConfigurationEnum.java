@@ -19,6 +19,7 @@ public enum ConfigurationEnum {
     VIEW_FILES_VIEW("view.files.view", "View"),
     VIEW_FILES_DOWNLOAD("view.files.download", "Download"),
     VIEW_FILES_DELETE("view.files.delete", "Delete"),
+    NUMBER_OF_HISTORY_ITEMS("number.of.history.items", "100")
     ;
 
     private String key;
