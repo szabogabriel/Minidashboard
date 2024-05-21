@@ -5,6 +5,7 @@ public enum ConfigurationTypeEnum {
     DEFAULT(""),
     TABLE_HEADER("header:"),
     COLUMN_HANDLER("callback:"),
+    REPLICATION_TARGET("replication:"),
     ;
 
     private String configCategory;

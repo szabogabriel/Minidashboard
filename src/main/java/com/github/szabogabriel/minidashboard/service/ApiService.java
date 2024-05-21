@@ -77,6 +77,8 @@ public class ApiService {
 		dee.setLevel7(attributes.getLevel7());
 		
 		dataEntryService.createEntry(dee);
+
+		//TODO: check for replication target
 	}
 
 	public List<DataResponse> getEntries() {
