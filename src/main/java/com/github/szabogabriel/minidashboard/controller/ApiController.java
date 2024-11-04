@@ -24,8 +24,11 @@ import com.github.szabogabriel.minidashboard.data.api.DataResponse;
 import com.github.szabogabriel.minidashboard.data.api.FileResponse;
 import com.github.szabogabriel.minidashboard.service.ApiService;
 
+import io.swagger.annotations.Api;
+
 @RestController
 @RequestMapping("/api")
+@Api("Dashboard API controller for managing the content.")
 public class ApiController {
 
 	@Autowired

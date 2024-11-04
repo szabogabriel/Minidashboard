@@ -64,9 +64,11 @@ public class ConfigKey {
         if (key == null) {
             if (other.key != null)
                 return false;
-        } else if (!key.equals(other.key))
-            return false;
-        return true;
+        //} else if (!key.equals(other.key))
+        //    return false;
+        } else if (pattern.matcher(other.key).matches()) 
+            return true;
+        return false;
     }
 
     
