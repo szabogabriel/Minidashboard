@@ -42,11 +42,28 @@ public class GuiController {
 	}
 
 	@GetMapping(value="/history/{domain}/{category}/{entry}", produces="text/html")
-	public ModelAndView history(@PathVariable("domain") String domain, @PathVariable("category") String category,
-			@PathVariable("entry") String entry) {
+	public ModelAndView history(@PathVariable("domain") String domain, 
+		@PathVariable("category") String category,
+		@PathVariable("entry") String entry,
+		@RequestParam(defaultValue = "0") int page) {
+
 		ModelAndView ret = createModelAndView();
-		
-		ret.addObject("data.entries", guiService.getHistoricData(domain, category, entry));
+
+		String numItemsEnvVar = guiService.getNumberOfHistoryItems();
+		numItemsEnvVar = (numItemsEnvVar != null) ? numItemsEnvVar : "50";
+		int numberOfHistoryItems = Integer.parseInt(numItemsEnvVar);
+
+		page = page < 0 ? 0 : page;
+		var totalPages = guiService.getTotalPages(domain, category, entry, numberOfHistoryItems);
+
+		ret.addObject("data.entries", guiService.getHistoricData(domain, category, entry, page, numberOfHistoryItems));
+		ret.addObject("size", numberOfHistoryItems);
+		ret.addObject("previous", page - 1);
+		ret.addObject("next", page + 1);
+		ret.addObject("lastPage", totalPages - 1);
+		ret.addObject("notFirstPage", page == 0 ? false : true);
+		ret.addObject("notLastPage", page == (totalPages - 1) ? false : true);
+
 		
 		if (domain != null && domain.trim().length() > 0) {
 			ret.addObject("show.history", Boolean.TRUE);

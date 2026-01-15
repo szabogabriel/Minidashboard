@@ -1,5 +1,18 @@
 {{#data.entries}}
 <h1>{{category}}</h1>
+<!-- Pagination links -->
+{{^first}}
+    <a href="?page=0&size={{size}}">First</a>
+    {{#notFirstPage}}
+        <a href="?page={{previous}}&size={{size}}">Previous</a>
+    {{/notFirstPage}}
+{{/first}}
+{{^last}}
+    {{#notLastPage}}
+         <a href="?page={{next}}&size={{size}}">Next</a>
+    {{/notLastPage}}
+    <a href="?page={{lastPage}}&size={{size}}">Last</a>   
+{{/last}}
 <table class="table table-hover">
   <tbody>
     <tr>
@@ -66,4 +79,17 @@
   {{/dataRows}}{{/dataEntries}}
   </tbody>
 </table>
+<!-- Pagination links -->
+{{^first}}
+    <a href="?page=0&size={{size}}">First</a>
+    {{#notFirstPage}}
+        <a href="?page={{previous}}&size={{size}}">Previous</a>
+    {{/notFirstPage}}
+{{/first}}
+{{^last}}
+    {{#notLastPage}}
+         <a href="?page={{next}}&size={{size}}">Next</a>
+    {{/notLastPage}}
+    <a href="?page={{lastPage}}&size={{size}}">Last</a>   
+{{/last}}
 {{/data.entries}}
