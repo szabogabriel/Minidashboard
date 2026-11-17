@@ -7,12 +7,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
-public class DateUtils {
+public final class DateUtils {
 
 	private static Map<String, DateTimeFormatter> formatterCache = new WeakHashMap<>();
+
+	private DateUtils() {
+		throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+	}
 
 	public static LocalDateTime fromMillies(Long millies) {
 		return LocalDateTime.ofInstant(Instant.ofEpochMilli(millies), ZoneId.systemDefault());

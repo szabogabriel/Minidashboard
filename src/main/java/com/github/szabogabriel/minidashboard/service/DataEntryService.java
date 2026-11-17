@@ -20,7 +20,7 @@ public class DataEntryService {
 
 	@Autowired
 	private EntryHandlerService entryHandlerService;
-
+	
 	public void createEntry(DataEntryEntity entity) {
 		List<DataEntryEntity> tmp = dataEntryRepo.findAllByDomainAndCategoryAndEntry(entity.getDomain(), entity.getCategory(), entity.getEntry());
 		entity.setCreateTimestamp(System.currentTimeMillis());
